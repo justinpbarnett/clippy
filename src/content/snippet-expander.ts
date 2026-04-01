@@ -90,4 +90,9 @@ loadSnippets();
 // Reload snippets periodically (every 30s) in case user adds new ones
 setInterval(loadSnippets, 30_000);
 
+// Reload immediately when a new snippet is saved
+chrome.runtime.onMessage.addListener((message) => {
+  if (message.type === MessageType.SNIPPETS_UPDATED) loadSnippets();
+});
+
 document.addEventListener('keydown', handleKeydown, true);

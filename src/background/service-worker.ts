@@ -87,6 +87,13 @@ async function handleSaveSnippet(payload: SaveSnippetPayload): Promise<ClipEntry
   };
 
   await addClip(clip);
+  chrome.tabs.query({}).then((tabs) => {
+    for (const tab of tabs) {
+      if (tab.id != null) {
+        chrome.tabs.sendMessage(tab.id, { type: MessageType.SNIPPETS_UPDATED }).catch(() => {});
+      }
+    }
+  });
   return clip;
 }
 

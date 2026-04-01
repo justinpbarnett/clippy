@@ -53,6 +53,7 @@ export enum MessageType {
   EXPORT_DATA = 'EXPORT_DATA',
   IMPORT_DATA = 'IMPORT_DATA',
   CLIP_COUNT = 'CLIP_COUNT',
+  SNIPPETS_UPDATED = 'SNIPPETS_UPDATED',
 }
 
 export interface ClipCapturedPayload {
