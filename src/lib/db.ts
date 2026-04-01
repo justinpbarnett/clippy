@@ -23,9 +23,13 @@ function getDb(): Promise<IDBPDatabase> {
   return dbPromise;
 }
 
+function normalizeClip(clip: ClipEntry): ClipEntry {
+  return { ...clip, pinned: (clip.pinned ? 1 : 0) as unknown as boolean, isSnippet: (clip.isSnippet ? 1 : 0) as unknown as boolean };
+}
+
 export async function addClip(clip: ClipEntry): Promise<void> {
   const db = await getDb();
-  await db.put(CLIPS_STORE, clip);
+  await db.put(CLIPS_STORE, normalizeClip(clip));
 }
 
 export async function getClipByHash(hash: string): Promise<ClipEntry | undefined> {
@@ -105,9 +109,9 @@ export async function togglePin(id: string): Promise<boolean> {
   const db = await getDb();
   const clip = await db.get(CLIPS_STORE, id);
   if (!clip) return false;
-  clip.pinned = !clip.pinned;
-  await db.put(CLIPS_STORE, clip);
-  return clip.pinned;
+  const newPinned = !clip.pinned;
+  await db.put(CLIPS_STORE, normalizeClip({ ...clip, pinned: newPinned }));
+  return newPinned;
 }
 
 export async function deleteClip(id: string): Promise<void> {
@@ -169,7 +173,7 @@ export async function importClips(clips: ClipEntry[]): Promise<number> {
   for (const clip of clips) {
     const existing = await db.getFromIndex(CLIPS_STORE, 'by-hash', clip.hash).catch(() => undefined);
     if (!existing) {
-      await db.put(CLIPS_STORE, clip);
+      await db.put(CLIPS_STORE, normalizeClip(clip));
       imported++;
     }
   }
