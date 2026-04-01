@@ -14,8 +14,8 @@ const TEST_HTML = `<!DOCTYPE html>
 
   <p id="plain-text">The quick brown fox jumps over the lazy dog near the riverbank</p>
   <p id="url-text">https://github.com/justinpbarnett/clippy</p>
-  <p id="email-text">justin@enverventures.com</p>
-  <p id="phone-text">+1 (404) 555-0192</p>
+  <p id="email-text">hello@example.com</p>
+  <p id="phone-text">+1 (555) 867-5309</p>
   <pre id="code-text">const greeting = 'Hello, World!';
 function sayHello(name) {
   return greeting.replace('World', name);
@@ -296,8 +296,8 @@ async function seedViaPopup(popupPage, extensionId, context) {
       { content: 'Meeting notes from the product review: ship the MVP by end of sprint', type: 'text', sourceUrl: 'https://docs.google.com/doc/meeting-notes', sourceTitle: 'Google Docs' },
       { content: '{"name": "Clippy", "version": "1.0.0", "private": true}', type: 'json', sourceUrl: 'https://github.com/justinpbarnett/clippy', sourceTitle: 'GitHub' },
       { content: "const greeting = 'Hello, World!';\nfunction sayHello(name) {\n  return greeting.replace('World', name);\n}\nconsole.log(sayHello('Clippy'));", type: 'code', sourceUrl: 'https://github.com/justinpbarnett/clippy', sourceTitle: 'GitHub' },
-      { content: '+1 (404) 555-0192', type: 'phone', sourceUrl: 'https://contacts.google.com', sourceTitle: 'Google Contacts' },
-      { content: 'justin@enverventures.com', type: 'email', sourceUrl: 'https://mail.google.com', sourceTitle: 'Gmail' },
+      { content: '+1 (555) 867-5309', type: 'phone', sourceUrl: 'https://contacts.example.com', sourceTitle: 'Contacts' },
+      { content: 'hello@example.com', type: 'email', sourceUrl: 'https://mail.example.com', sourceTitle: 'Mail' },
       { content: 'https://github.com/justinpbarnett/clippy', type: 'url', sourceUrl: 'https://github.com', sourceTitle: 'GitHub' },
       { content: 'The quick brown fox jumps over the lazy dog near the riverbank', type: 'text', sourceUrl: 'https://example.com', sourceTitle: 'Example' },
     ];
