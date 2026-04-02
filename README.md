@@ -2,7 +2,16 @@
 
 Free clipboard manager for Chrome and Firefox. Saves everything you copy, searches in milliseconds, stays local.
 
-![Clipjar demo](demo.gif)
+<table>
+  <tr>
+    <td><img src="store/screenshots/01-history.png" alt="Clipboard history"/></td>
+    <td><img src="store/screenshots/02-search.png" alt="Fuzzy search"/></td>
+  </tr>
+  <tr>
+    <td><img src="store/screenshots/03-favorites.png" alt="Favorites"/></td>
+    <td><img src="store/screenshots/04-snippets.png" alt="Text snippets"/></td>
+  </tr>
+</table>
 
 ## Why
 
