@@ -14,8 +14,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "zip": "npm run zip:chrome",
-    "zip:chrome": "cd dist-chrome && zip -r ../clipjar-chrome.zip .",
-    "zip:firefox": "cd dist-firefox && zip -r ../clipjar-firefox.zip .",
+    "zip:chrome": "cd dist-chrome && zip -r ../clipjar-chrome-$npm_package_version.zip .",
+    "zip:firefox": "cd dist-firefox && zip -r ../clipjar-firefox-$npm_package_version.zip .",
     "screenshots": "node tests/store-screenshots.mjs",
     "gen-icons": "node scripts/gen-icons.mjs"
   },

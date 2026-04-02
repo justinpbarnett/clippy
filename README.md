@@ -36,7 +36,25 @@ Clipjar has none of them. Everything stays in your browser's local IndexedDB. No
 
 ## Install
 
-### From source
+Download the latest zip from the [releases page](https://github.com/justinpbarnett/clipjar/releases/latest).
+
+**Chrome / Edge / Brave:** download `clipjar-chrome-1.0.0.zip`, unzip it, then:
+
+1. Open `chrome://extensions/`
+2. Enable **Developer mode** (top right)
+3. Click **Load unpacked**, select the unzipped folder
+
+**Firefox (128+):** download `clipjar-firefox-1.0.0.zip`, then:
+
+1. Open `about:debugging#/runtime/this-firefox`
+2. Click **Load Temporary Add-on**
+3. Select the zip file directly
+
+Pin Clipjar to your toolbar and press **Cmd+Shift+V** (Mac) or **Ctrl+Shift+V** (Windows/Linux) to open it.
+
+To update, remove the existing extension, download the new zip from the [releases page](https://github.com/justinpbarnett/clipjar/releases/latest), and repeat the install steps.
+
+### Build from source
 
 Prerequisites: Node.js 18+ and npm.
 
@@ -44,39 +62,10 @@ Prerequisites: Node.js 18+ and npm.
 git clone https://github.com/justinpbarnett/clipjar.git
 cd clipjar
 npm install
+npm run build:chrome   # or build:firefox
 ```
 
-**Chrome / Edge / Brave:**
-
-```bash
-npm run build:chrome
-```
-
-1. Open `chrome://extensions/`
-2. Enable **Developer mode** (top right)
-3. Click **Load unpacked**, select the `dist-chrome/` folder
-
-**Firefox (128+):**
-
-```bash
-npm run build:firefox
-```
-
-1. Open `about:debugging#/runtime/this-firefox`
-2. Click **Load Temporary Add-on**
-3. Select any file inside `dist-firefox/`
-
-For a permanent install, package it as a signed XPI via [about:addons](about:addons) or the [Firefox Add-on Hub](https://addons.mozilla.org/developers/).
-
-Pin Clipjar to your toolbar and press **Cmd+Shift+V** (Mac) or **Ctrl+Shift+V** (Windows/Linux) to open it.
-
-### Claude Code auto-setup
-
-Paste this into Claude Code and it will clone, build, and tell you exactly what to click:
-
-```
-Clone https://github.com/justinpbarnett/clipjar, install dependencies, build it, then give me the exact steps to load it as an unpacked Chrome extension. Print the absolute path to the dist-chrome/ folder so I can paste it into Chrome.
-```
+Then load the `dist-chrome/` (or `dist-firefox/`) folder as an unpacked extension using the steps above.
 
 ## Keyboard shortcuts
 
