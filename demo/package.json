@@ -1,0 +1,29 @@
+{
+  "name": "demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "studio": "npx remotion studio src/index.ts",
+    "render": "npx remotion render src/index.ts ClippyDemo out/demo.mp4 --codec h264 --width 1920 --height 1080 --fps 30 --crf 18",
+    "render:gif": "npx remotion render src/index.ts ClippyDemo out/demo.gif --width 960 --height 540",
+    "record": "node ../tests/record-demo.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@remotion/cli": "4.0.290",
+    "@remotion/google-fonts": "4.0.290",
+    "@remotion/media-utils": "4.0.290",
+    "remotion": "4.0.290"
+  },
+  "devDependencies": {
+    "@remotion/renderer": "^4.0.290",
+    "@types/react": "^19.2.14",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "typescript": "^6.0.2"
+  }
+}
