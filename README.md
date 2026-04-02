@@ -153,7 +153,7 @@ npm run zip            # Package dist-chrome/ for Chrome Web Store
 - All data stored locally in IndexedDB. Nothing leaves your browser.
 - Zero network requests. No analytics, no telemetry, no tracking.
 - No `clipboardRead` permission at install. Text is captured via `window.getSelection()` inside the native copy event.
-- `clipboardRead` is an optional permission, requested only if you enable image capture in settings.
+- `clipboardRead` is listed as an optional permission but is not currently requested by any feature.
 - Open source. Read every line.
 
 ## License

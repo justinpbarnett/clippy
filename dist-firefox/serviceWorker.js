@@ -1,0 +1,1 @@
+import "/assets/src/background/service-worker-DXnLQyHD.js";

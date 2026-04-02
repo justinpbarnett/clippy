@@ -5,9 +5,4 @@ import manifest from './manifest.firefox.json';
 export default defineConfig({
   build: { outDir: 'dist-firefox' },
   plugins: [webExtension({ manifest })],
-  resolve: {
-    alias: {
-      '@': '/src',
-    },
-  },
 });

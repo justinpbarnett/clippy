@@ -1,0 +1,1 @@
+(async()=>{await import(chrome.runtime.getURL("assets/src/content/clipboard-capture-BUEOcL0g.js"))})();

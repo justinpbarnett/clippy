@@ -1,0 +1,85 @@
+{
+  "manifest_version": 3,
+  "name": "Clippy",
+  "version": "1.0.0",
+  "description": "The clipboard manager Chrome deserves. Free, private, keyboard-first.",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "offscreen",
+    "sidePanel"
+  ],
+  "optional_permissions": [
+    "clipboardRead"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "service-worker-loader.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "js": [
+        "assets/clipboard-capture.ts-loader-DxZq7Hs7.js",
+        "assets/snippet-expander.ts-loader-LYgKxUzV.js"
+      ],
+      "matches": [
+        "<all_urls>"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "src/popup/index.html",
+    "default_icon": {
+      "16": "src/assets/icons/icon-16.png",
+      "32": "src/assets/icons/icon-32.png",
+      "48": "src/assets/icons/icon-48.png",
+      "128": "src/assets/icons/icon-128.png"
+    }
+  },
+  "side_panel": {
+    "default_path": "src/sidepanel/index.html"
+  },
+  "options_ui": {
+    "page": "src/options/index.html",
+    "open_in_tab": true
+  },
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+V",
+        "mac": "Command+Shift+V"
+      },
+      "description": "Open Clippy clipboard history"
+    },
+    "copy-first": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+1",
+        "mac": "Command+Shift+1"
+      },
+      "description": "Copy most recent clip to clipboard"
+    }
+  },
+  "icons": {
+    "16": "src/assets/icons/icon-16.png",
+    "48": "src/assets/icons/icon-48.png",
+    "128": "src/assets/icons/icon-128.png"
+  },
+  "web_accessible_resources": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "resources": [
+        "assets/types-CsvTKnt5.js",
+        "assets/clipboard-capture.ts-BoagpF59.js",
+        "assets/constants-CpoauvfA.js",
+        "assets/snippet-expander.ts-zpFyKnMy.js"
+      ],
+      "use_dynamic_url": false
+    }
+  ]
+}

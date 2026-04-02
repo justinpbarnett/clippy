@@ -2,12 +2,10 @@
   "manifest_version": 3,
   "name": "Clippy",
   "version": "1.0.0",
-  "description": "The clipboard manager Chrome deserves. Free, private, keyboard-first.",
+  "description": "The clipboard manager Firefox deserves. Free, private, keyboard-first.",
   "permissions": [
     "activeTab",
-    "storage",
-    "offscreen",
-    "sidePanel"
+    "storage"
   ],
   "optional_permissions": [
     "clipboardRead"
@@ -16,15 +14,17 @@
     "<all_urls>"
   ],
   "background": {
-    "service_worker": "src/background/service-worker.ts",
+    "service_worker": "serviceWorker.js",
     "type": "module"
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
+      "matches": [
+        "<all_urls>"
+      ],
       "js": [
-        "src/content/clipboard-capture.ts",
-        "src/content/snippet-expander.ts"
+        "src/content/clipboard-capture.js",
+        "src/content/snippet-expander.js"
       ],
       "run_at": "document_idle"
     }
@@ -38,8 +38,9 @@
       "128": "src/assets/icons/icon-128.png"
     }
   },
-  "side_panel": {
-    "default_path": "src/sidepanel/index.html"
+  "sidebar_action": {
+    "default_title": "Clippy",
+    "default_panel": "src/sidepanel/index.html"
   },
   "options_ui": {
     "page": "src/options/index.html",
@@ -65,5 +66,24 @@
     "16": "src/assets/icons/icon-16.png",
     "48": "src/assets/icons/icon-48.png",
     "128": "src/assets/icons/icon-128.png"
-  }
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "clippy@clippy.dev",
+      "strict_min_version": "128.0"
+    }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "assets/constants-UzJMoOVE.js",
+        "assets/src/content/clipboard-capture-BUEOcL0g.js",
+        "assets/src/content/snippet-expander-DypHbjwE.js",
+        "assets/types-CsvTKnt5.js"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ]
 }

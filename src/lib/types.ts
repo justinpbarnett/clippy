@@ -28,12 +28,9 @@ export interface UserSettings {
   maxHistory: number;
   theme: 'system' | 'light' | 'dark';
   enableSnippetExpansion: boolean;
-  enableImageCapture: boolean;
-  enableRichText: boolean;
   enableSourceTracking: boolean;
   skipPasswordFields: boolean;
   showNotifications: boolean;
-  searchMode: 'fuzzy' | 'exact';
   defaultTab: 'all' | 'favorites' | 'snippets';
 }
 

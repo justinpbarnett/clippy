@@ -1,4 +1,5 @@
 import { MessageType, type ClipEntry } from '../lib/types';
+import { SNIPPET_BUFFER_SIZE } from '../lib/constants';
 
 let snippets: ClipEntry[] = [];
 let buffer = '';
@@ -9,7 +10,8 @@ async function loadSnippets(): Promise<void> {
       type: MessageType.GET_SNIPPETS,
       payload: undefined,
     }) || [];
-  } catch {
+  } catch (err) {
+    console.warn('[clippy] failed to load snippets:', err);
     snippets = [];
   }
 }
@@ -59,7 +61,7 @@ function replaceInContentEditable(shortcut: string, expansion: string): void {
 function handleKeydown(e: KeyboardEvent): void {
   if (e.key.length === 1) {
     buffer += e.key;
-    if (buffer.length > 50) buffer = buffer.slice(-50);
+    if (buffer.length > SNIPPET_BUFFER_SIZE) buffer = buffer.slice(-SNIPPET_BUFFER_SIZE);
   } else if (e.key === 'Backspace') {
     buffer = buffer.slice(0, -1);
   } else if (e.key === 'Enter' || e.key === 'Tab' || e.key === 'Escape') {
@@ -88,7 +90,8 @@ function handleKeydown(e: KeyboardEvent): void {
 loadSnippets();
 
 // Reload snippets periodically (every 30s) in case user adds new ones
-setInterval(loadSnippets, 30_000);
+const snippetIntervalId = setInterval(loadSnippets, 30_000);
+window.addEventListener('pagehide', () => clearInterval(snippetIntervalId));
 
 // Reload immediately when a new snippet is saved
 chrome.runtime.onMessage.addListener((message) => {

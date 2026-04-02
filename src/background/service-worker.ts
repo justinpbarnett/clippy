@@ -93,7 +93,7 @@ async function handleSaveSnippet(payload: SaveSnippetPayload): Promise<ClipEntry
         chrome.tabs.sendMessage(tab.id, { type: MessageType.SNIPPETS_UPDATED }).catch(() => {});
       }
     }
-  });
+  }).catch((err) => console.error('[clippy] tabs.query failed:', err));
   return clip;
 }
 
@@ -175,11 +175,11 @@ chrome.commands.onCommand.addListener(async (command) => {
       // navigator.clipboard cannot intercept the write.
       const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
       if (tab?.id != null && tab.url?.startsWith('http')) {
-        chrome.tabs.sendMessage(tab.id, { type: 'WRITE_CLIPBOARD', payload: { text } });
+        chrome.tabs.sendMessage(tab.id, { type: MessageType.WRITE_CLIPBOARD, payload: { text } });
       }
     } else {
       await ensureOffscreen();
-      chrome.runtime.sendMessage({ type: 'WRITE_CLIPBOARD', payload: { text } });
+      chrome.runtime.sendMessage({ type: MessageType.WRITE_CLIPBOARD, payload: { text } });
     }
   }
 });

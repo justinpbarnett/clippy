@@ -4,11 +4,16 @@ import type { Store } from '../../lib/store';
 import type { PopupState } from '../state';
 import { showToast } from './Toast';
 
+export interface SnippetEditorElement extends HTMLElement {
+  show: () => void;
+  hide: () => void;
+}
+
 export function renderSnippetEditor(
   container: HTMLElement,
   store: Store<PopupState>,
   onSaved: () => void,
-): HTMLElement {
+): SnippetEditorElement {
   const wrapper = document.createElement('div');
   wrapper.className = 'hidden px-3 py-2 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50';
 
@@ -99,9 +104,8 @@ export function renderSnippetEditor(
 
   container.appendChild(wrapper);
 
-  // Expose show/hide via the element
-  (wrapper as unknown as { show: () => void }).show = show;
-  (wrapper as unknown as { hide: () => void }).hide = hide;
-
-  return wrapper;
+  const el = wrapper as unknown as SnippetEditorElement;
+  el.show = show;
+  el.hide = hide;
+  return el;
 }

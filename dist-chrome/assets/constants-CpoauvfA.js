@@ -1,0 +1,1 @@
+const s={maxHistory:1e3,theme:"system",enableSnippetExpansion:!0,enableSourceTracking:!0,skipPasswordFields:!0,showNotifications:!1,defaultTab:"all"},t=5e4,a=50,e="clippy-db",n=1,o="clips",c="clippy-settings",E=50;export{o as C,n as D,t as M,a as P,E as S,e as a,c as b,s as c};

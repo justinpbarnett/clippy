@@ -1,11 +1,8 @@
 import { MessageType, type UserSettings, type ClipEntry } from '../lib/types';
-import { DEFAULT_SETTINGS } from '../lib/constants';
+import { DEFAULT_SETTINGS, MAX_CONTENT_LENGTH } from '../lib/constants';
+import { sendMessage } from '../lib/messages';
 
 const root = document.getElementById('app')!;
-
-async function sendMessage<T>(message: { type: string; payload: unknown }): Promise<T> {
-  return chrome.runtime.sendMessage(message);
-}
 
 async function init() {
   const settings = await sendMessage<UserSettings>({
@@ -130,7 +127,7 @@ function createSettingRow(label: string): HTMLElement {
 }
 
 async function saveSetting(key: string, value: unknown) {
-  await sendMessage({ type: MessageType.UPDATE_SETTINGS, payload: { [key]: value } });
+  await sendMessage({ type: MessageType.UPDATE_SETTINGS, payload: { [key]: value } as Partial<UserSettings> });
 }
 
 async function handleExport() {
@@ -162,9 +159,12 @@ function handleImport() {
     try {
       const text = await file.text();
       const data = JSON.parse(text);
-      if (!data.clips || !Array.isArray(data.clips)) {
-        throw new Error('Invalid backup file');
-      }
+      if (!data || typeof data !== 'object') throw new Error('Invalid backup file');
+      if (!Array.isArray(data.clips)) throw new Error('Invalid backup: missing clips array');
+      data.clips = data.clips.map((c: ClipEntry) => ({
+        ...c,
+        content: typeof c.content === 'string' ? c.content.slice(0, MAX_CONTENT_LENGTH) : '',
+      }));
 
       const result = await sendMessage<{ imported: number }>({
         type: MessageType.IMPORT_DATA,

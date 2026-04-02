@@ -8,7 +8,7 @@ import { initialState, type PopupState } from './state';
 import { renderTabBar } from './components/TabBar';
 import { renderSearchBar } from './components/SearchBar';
 import { renderClipList } from './components/ClipList';
-import { renderSnippetEditor } from './components/SnippetEditor';
+import { renderSnippetEditor, type SnippetEditorElement } from './components/SnippetEditor';
 import { renderHelpOverlay } from './components/HelpOverlay';
 import { showToast } from './components/Toast';
 
@@ -185,7 +185,7 @@ function renderStatusBar(container: HTMLElement, store: Store<PopupState>): void
 function renderSnippetButton(
   container: HTMLElement,
   store: Store<PopupState>,
-  editorEl: HTMLElement,
+  editorEl: SnippetEditorElement,
 ): void {
   const wrapper = document.createElement('div');
   wrapper.className = 'hidden px-3 py-1 border-t border-gray-200 dark:border-gray-700 flex-shrink-0';
@@ -196,8 +196,7 @@ function renderSnippetButton(
     'w-full py-1 text-xs text-blue-500 hover:text-blue-600 dark:text-blue-400 ' +
     'dark:hover:text-blue-300 font-medium';
   btn.addEventListener('click', () => {
-    const editor = editorEl as HTMLElement & { show?: () => void };
-    editor.show?.();
+    editorEl.show();
   });
 
   wrapper.appendChild(btn);
