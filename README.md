@@ -2,7 +2,7 @@
 
 The clipboard manager Chrome deserves. Free, private, keyboard-first.
 
-![Clippy popup showing clipboard history with type detection](screenshots/clippy-hero.png)
+![Clippy demo](demo.gif)
 
 ## Why
 

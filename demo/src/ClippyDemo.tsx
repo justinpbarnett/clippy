@@ -1,90 +1,57 @@
 import React from 'react';
-import { AbsoluteFill, Series } from 'remotion';
+import { AbsoluteFill, Series, Sequence } from 'remotion';
 import { Background } from './components/Background';
+import { Callout } from './components/Callout';
 import { IntroScene } from './scenes/IntroScene';
+import { CopyScene } from './scenes/CopyScene';
+import { PopupClickScene } from './scenes/PopupClickScene';
+import { PasteScene } from './scenes/PasteScene';
 import { OutroScene } from './scenes/OutroScene';
-import { VideoScene } from './scenes/VideoScene';
-import { SCENE_DURATION } from './constants';
+
+// Intro:  25f (0.8s)
+// Copy:   70f (2.3s)
+// Popup: 120f (4.0s)
+// Paste:  75f (2.5s)
+// Outro:  35f (1.2s)
+// Total: 25+65+115+70+30 = 305 frames (~10s)
 
 export const ClippyDemo: React.FC = () => {
   return (
     <AbsoluteFill style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
       <Background />
       <Series>
-        {/* Intro: title card */}
-        <Series.Sequence durationInFrames={SCENE_DURATION.INTRO}>
+        <Series.Sequence durationInFrames={25}>
           <IntroScene />
         </Series.Sequence>
 
-        {/* Copy capture: copy text on a page, popup appears with the clip */}
-        <Series.Sequence durationInFrames={SCENE_DURATION.COPY} offset={-8}>
-          <VideoScene
-            clip="copy.webm"
-            callout="Every copy is automatically saved"
-            calloutSub="No hotkeys needed. Just copy as usual."
-            calloutDelay={30}
-            zoomTarget={[0.5, 0.35]}
-            zoomScale={1.4}
-            zoomAt={80}
-          />
+        <Series.Sequence durationInFrames={70} offset={-5}>
+          <AbsoluteFill>
+            <CopyScene />
+            <Sequence from={50}>
+              <Callout text="You copy. Clippy saves it." position="bottom" />
+            </Sequence>
+          </AbsoluteFill>
         </Series.Sequence>
 
-        {/* Browse history */}
-        <Series.Sequence durationInFrames={SCENE_DURATION.HISTORY} offset={-8}>
-          <VideoScene
-            clip="history.webm"
-            callout="Your full clipboard history, always there"
-            calloutSub="Click any clip to copy it back instantly."
-            calloutDelay={20}
-          />
+        <Series.Sequence durationInFrames={120} offset={-5}>
+          <AbsoluteFill>
+            <PopupClickScene />
+            <Sequence from={20}>
+              <Callout text="Open Clippy. Navigate to any clip." position="bottom" />
+            </Sequence>
+          </AbsoluteFill>
         </Series.Sequence>
 
-        {/* Search */}
-        <Series.Sequence durationInFrames={SCENE_DURATION.SEARCH} offset={-8}>
-          <VideoScene
-            clip="search.webm"
-            callout="Fuzzy search across everything you've copied"
-            calloutDelay={20}
-            zoomTarget={[0.5, 0.42]}
-            zoomScale={1.25}
-            zoomAt={15}
-          />
+        <Series.Sequence durationInFrames={75} offset={-5}>
+          <AbsoluteFill>
+            <PasteScene />
+            <Sequence from={30}>
+              <Callout text="Paste it anywhere." position="bottom" />
+            </Sequence>
+          </AbsoluteFill>
         </Series.Sequence>
 
-        {/* Favorites */}
-        <Series.Sequence durationInFrames={SCENE_DURATION.FAVORITES} offset={-8}>
-          <VideoScene
-            clip="favorites.webm"
-            callout="Pin the ones you reach for every day"
-            calloutDelay={20}
-          />
-        </Series.Sequence>
-
-        {/* Snippets */}
-        <Series.Sequence durationInFrames={SCENE_DURATION.SNIPPETS} offset={-8}>
-          <VideoScene
-            clip="snippets.webm"
-            callout="Snippets: type a shortcut, expand to any text"
-            calloutSub="Create templates, signatures, boilerplate."
-            calloutDelay={20}
-            zoomTarget={[0.5, 0.75]}
-            zoomScale={1.35}
-            zoomAt={100}
-          />
-        </Series.Sequence>
-
-        {/* Keyboard shortcut */}
-        <Series.Sequence durationInFrames={SCENE_DURATION.SHORTCUT} offset={-8}>
-          <VideoScene
-            clip="shortcut.webm"
-            callout="Open anywhere with Ctrl+Shift+V"
-            calloutSub="Your history is one shortcut away."
-            calloutDelay={15}
-          />
-        </Series.Sequence>
-
-        {/* Outro: end card */}
-        <Series.Sequence durationInFrames={SCENE_DURATION.OUTRO} offset={-8}>
+        <Series.Sequence durationInFrames={35} offset={-5}>
           <OutroScene />
         </Series.Sequence>
       </Series>
