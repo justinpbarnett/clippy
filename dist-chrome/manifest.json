@@ -24,8 +24,8 @@
   "content_scripts": [
     {
       "js": [
-        "assets/clipboard-capture.ts-loader-B5qzxhVM.js",
-        "assets/snippet-expander.ts-loader-DxnntShp.js"
+        "assets/clipboard-capture.ts-loader-DinfwAX3.js",
+        "assets/snippet-expander.ts-loader-DxKuQrkQ.js"
       ],
       "matches": [
         "<all_urls>"
@@ -77,9 +77,9 @@
       ],
       "resources": [
         "assets/types-DAQ-VXlD.js",
-        "assets/clipboard-capture.ts-DYprnG-E.js",
+        "assets/clipboard-capture.ts-Db7QVELV.js",
         "assets/constants-Cw9bVvMb.js",
-        "assets/snippet-expander.ts-Dptv_IkF.js"
+        "assets/snippet-expander.ts-D0W3ESu6.js"
       ],
       "use_dynamic_url": false
     }

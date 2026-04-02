@@ -2,6 +2,8 @@ import { MessageType, type ClipEntry } from '../lib/types';
 import { SNIPPET_BUFFER_SIZE } from '../lib/constants';
 
 let snippets: ClipEntry[] = [];
+let snippetMap = new Map<string, ClipEntry>();
+let maxShortcutLen = 0;
 let buffer = '';
 
 async function loadSnippets(): Promise<void> {
@@ -10,17 +12,32 @@ async function loadSnippets(): Promise<void> {
       type: MessageType.GET_SNIPPETS,
       payload: undefined,
     }) || [];
+    rebuildSnippetMap();
   } catch (err) {
     console.warn('[clipjar] failed to load snippets:', err);
     snippets = [];
+    snippetMap = new Map();
+    maxShortcutLen = 0;
+  }
+}
+
+function rebuildSnippetMap(): void {
+  snippetMap = new Map();
+  maxShortcutLen = 0;
+  for (const snippet of snippets) {
+    if (snippet.shortcut) {
+      snippetMap.set(snippet.shortcut, snippet);
+      if (snippet.shortcut.length > maxShortcutLen) maxShortcutLen = snippet.shortcut.length;
+    }
   }
 }
 
 function findMatchingSnippet(): ClipEntry | undefined {
-  for (const snippet of snippets) {
-    if (snippet.shortcut && buffer.endsWith(snippet.shortcut)) {
-      return snippet;
-    }
+  if (snippetMap.size === 0 || buffer.length === 0) return undefined;
+  const tail = buffer.slice(-maxShortcutLen);
+  for (let len = tail.length; len >= 1; len--) {
+    const match = snippetMap.get(tail.slice(-len));
+    if (match) return match;
   }
   return undefined;
 }

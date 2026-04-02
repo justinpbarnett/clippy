@@ -18,7 +18,39 @@ export function renderClipList(
   const emptyEl = document.createElement('div');
   emptyEl.className = 'jar-empty';
 
-  function render(state: PopupState) {
+  let prevClips: ClipEntry[] | null = null;
+  let prevSelectedIndex = -1;
+  let prevLoading = false;
+
+  // Single delegated listener instead of one per item.
+  // Pin button uses stopPropagation so it won't reach here.
+  listEl.addEventListener('click', (e) => {
+    const target = (e.target as HTMLElement).closest('.jar-clip') as HTMLElement | null;
+    if (!target) return;
+    const clip = store.getState().clips.find((c) => c.id === target.dataset.id);
+    if (clip) callbacks.onSelect(clip);
+  });
+
+  function render(state: PopupState): void {
+    // Fast path: only selection changed — swap classes, no DOM rebuild.
+    if (
+      state.clips === prevClips &&
+      state.loading === prevLoading &&
+      state.selectedIndex !== prevSelectedIndex
+    ) {
+      const oldEl = listEl.children[prevSelectedIndex] as HTMLElement | undefined;
+      const newEl = listEl.children[state.selectedIndex] as HTMLElement | undefined;
+      oldEl?.classList.remove('selected');
+      newEl?.classList.add('selected');
+      newEl?.scrollIntoView({ block: 'nearest' });
+      prevSelectedIndex = state.selectedIndex;
+      return;
+    }
+
+    prevClips = state.clips;
+    prevLoading = state.loading;
+    prevSelectedIndex = state.selectedIndex;
+
     listEl.replaceChildren();
 
     if (state.loading) {
@@ -41,12 +73,13 @@ export function renderClipList(
       return;
     }
 
+    const frag = document.createDocumentFragment();
     for (let i = 0; i < state.clips.length; i++) {
-      const clip = state.clips[i];
-      const el = createClipItemElement(clip, i === state.selectedIndex, callbacks.onPin);
-      el.addEventListener('click', () => callbacks.onSelect(clip));
-      listEl.appendChild(el);
+      frag.appendChild(
+        createClipItemElement(state.clips[i], i === state.selectedIndex, callbacks.onPin),
+      );
     }
+    listEl.appendChild(frag);
 
     const selectedEl = listEl.children[state.selectedIndex] as HTMLElement | undefined;
     selectedEl?.scrollIntoView({ block: 'nearest' });

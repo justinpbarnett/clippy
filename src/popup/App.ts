@@ -37,8 +37,7 @@ export function initApp(root: HTMLElement): void {
     if (state.activeTab !== prevTab) {
       prevTab = state.activeTab;
       prevQuery = state.query;
-      invalidateIndex();
-      fetchClips();
+      fetchClips(); // fetchClips calls invalidateIndex internally
     } else if (state.query !== prevQuery) {
       prevQuery = state.query;
       applySearch();
@@ -85,8 +84,17 @@ export function initApp(root: HTMLElement): void {
   }
 
   async function handlePin(id: string): Promise<void> {
-    await sendMessage({ type: MessageType.TOGGLE_PIN, payload: { id } });
-    fetchClips();
+    if (store.getState().activeTab !== 'favorites') {
+      // Optimistic update: flip the pin flag locally and re-render immediately.
+      // No IDB round-trip needed since pin state doesn't affect clip visibility on this tab.
+      allClips = allClips.map((c) => (c.id === id ? { ...c, pinned: !c.pinned } : c));
+      applySearch();
+      sendMessage({ type: MessageType.TOGGLE_PIN, payload: { id } });
+    } else {
+      // On favorites the clip may disappear after unpin, so reload after confirming.
+      await sendMessage({ type: MessageType.TOGGLE_PIN, payload: { id } });
+      fetchClips();
+    }
   }
 
   function handleKeydown(e: KeyboardEvent, store: Store<PopupState>): void {

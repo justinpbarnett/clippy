@@ -5,6 +5,8 @@
 
   // src/content/snippet-expander.ts
   var snippets = [];
+  var snippetMap = /* @__PURE__ */ new Map();
+  var maxShortcutLen = 0;
   var buffer = "";
   async function loadSnippets() {
     try {
@@ -12,16 +14,30 @@
         type: "GET_SNIPPETS" /* GET_SNIPPETS */,
         payload: void 0
       }) || [];
+      rebuildSnippetMap();
     } catch (err) {
       console.warn("[clipjar] failed to load snippets:", err);
       snippets = [];
+      snippetMap = /* @__PURE__ */ new Map();
+      maxShortcutLen = 0;
+    }
+  }
+  function rebuildSnippetMap() {
+    snippetMap = /* @__PURE__ */ new Map();
+    maxShortcutLen = 0;
+    for (const snippet of snippets) {
+      if (snippet.shortcut) {
+        snippetMap.set(snippet.shortcut, snippet);
+        if (snippet.shortcut.length > maxShortcutLen) maxShortcutLen = snippet.shortcut.length;
+      }
     }
   }
   function findMatchingSnippet() {
-    for (const snippet of snippets) {
-      if (snippet.shortcut && buffer.endsWith(snippet.shortcut)) {
-        return snippet;
-      }
+    if (snippetMap.size === 0 || buffer.length === 0) return void 0;
+    const tail = buffer.slice(-maxShortcutLen);
+    for (let len = tail.length; len >= 1; len--) {
+      const match = snippetMap.get(tail.slice(-len));
+      if (match) return match;
     }
     return void 0;
   }
