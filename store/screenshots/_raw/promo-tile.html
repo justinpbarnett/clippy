@@ -2,43 +2,91 @@
 <html>
 <head>
 <meta charset="UTF-8" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body {
-  width: 440px; height: 280px; overflow: hidden;
-  background: radial-gradient(ellipse at 50% 40%, #1e0a4a 0%, #0d0620 45%, #050210 100%);
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  width:440px;height:280px;overflow:hidden;
+  background:#080503;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 44px 0 48px;position:relative;
 }
-body::before {
-  content: '';
-  position: absolute; inset: 0;
-  background-image: linear-gradient(rgba(109,40,217,0.07) 1px, transparent 1px),
-                    linear-gradient(90deg, rgba(109,40,217,0.07) 1px, transparent 1px);
-  background-size: 40px 40px;
+
+/* Amber radial glow on right */
+body::after{
+  content:'';position:absolute;right:60px;top:50%;transform:translateY(-50%);
+  width:280px;height:280px;border-radius:50%;
+  background:radial-gradient(circle,rgba(200,122,56,0.1) 0%,transparent 65%);
+  pointer-events:none;
 }
-.icon { font-size: 52px; position: relative; z-index: 1; }
-.name {
-  font-size: 48px; font-weight: 800; color: #fff;
-  letter-spacing: -0.04em; position: relative; z-index: 1;
+
+/* Grain */
+body::before{
+  content:'';position:absolute;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  background-size:200px 200px;opacity:0.5;pointer-events:none;z-index:0;
 }
-.tag {
-  font-size: 16px; color: rgba(255,255,255,0.5);
-  font-weight: 400; position: relative; z-index: 1;
+
+.content{position:relative;z-index:1;flex:1}
+
+.logo-row{display:flex;align-items:center;gap:8px;margin-bottom:16px}
+.logo-jar{color:#C87A38}
+.logo-name{
+  font-family:'Space Mono',monospace;font-size:11px;font-weight:700;
+  color:#C87A38;letter-spacing:0.2em;text-transform:uppercase;
 }
-.badge {
-  background: linear-gradient(135deg, #7c3aed, #4f46e5);
-  color: #fff; font-size: 13px; font-weight: 600;
-  padding: 6px 18px; border-radius: 100px;
-  position: relative; z-index: 1; margin-top: 4px;
-  box-shadow: 0 4px 16px rgba(109,40,217,0.5);
+
+.headline{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-size:42px;font-weight:600;line-height:1.05;
+  color:#EED9B5;letter-spacing:-0.01em;margin-bottom:14px;
+}
+.headline em{font-style:italic;color:#E8A848}
+
+.tagline{
+  font-family:'Space Mono',monospace;
+  font-size:10px;font-weight:400;color:#5A4030;
+  letter-spacing:0.08em;
+  text-transform:uppercase;line-height:1.7;
+}
+
+/* Large decorative jar */
+.jar-large{
+  position:relative;z-index:1;flex-shrink:0;
+  color:#C87A38;opacity:0.7;
 }
 </style>
 </head>
 <body>
-  <div class="icon">📋</div>
-  <div class="name">Clipjar</div>
-  <div class="tag">Free. Private. Keyboard-first.</div>
-  <div class="badge">Clipboard Manager</div>
+  <div class="content">
+    <div class="logo-row">
+      <svg class="logo-jar" width="14" height="17" viewBox="0 0 13 17" fill="none">
+        <rect x="2" y="0.5" width="9" height="2.5" rx="0.8" fill="currentColor" opacity="0.85"/>
+        <rect x="3.5" y="3" width="6" height="1.5" fill="currentColor" opacity="0.55"/>
+        <path d="M1.5 4.5L1 14Q1 15.5 2.5 15.5H10.5Q12 15.5 12 14L11.5 4.5Z" fill="currentColor" fill-opacity="0.12" stroke="currentColor" stroke-opacity="0.65" stroke-width="0.9"/>
+        <line x1="3.5" y1="6" x2="3" y2="13.5" stroke="currentColor" stroke-width="0.9" opacity="0.25" stroke-linecap="round"/>
+      </svg>
+      <span class="logo-name">Clipjar</span>
+    </div>
+    <div class="headline">Clipboard<br><em>history.</em></div>
+    <div class="tagline">Free &middot; Private &middot; Keyboard-first</div>
+  </div>
+
+  <!-- Large decorative jar SVG -->
+  <svg class="jar-large" width="80" height="100" viewBox="0 0 52 68" fill="none">
+    <rect x="8" y="2" width="36" height="10" rx="2.5" fill="currentColor" opacity="0.9"/>
+    <rect x="14" y="12" width="24" height="6" fill="currentColor" opacity="0.55"/>
+    <path d="M5 18L2 56Q2 63 9 63H43Q50 63 50 56L47 18Z"
+      fill="currentColor" fill-opacity="0.1"
+      stroke="currentColor" stroke-opacity="0.5" stroke-width="1.5"/>
+    <line x1="14" y1="22" x2="11.5" y2="58" stroke="currentColor" stroke-width="2.5" opacity="0.18" stroke-linecap="round"/>
+    <line x1="20" y1="22" x2="18.5" y2="46" stroke="currentColor" stroke-width="1.2" opacity="0.12" stroke-linecap="round"/>
+    <!-- Label band on jar -->
+    <rect x="8" y="30" width="36" height="18" rx="1" fill="currentColor" fill-opacity="0.06" stroke="currentColor" stroke-opacity="0.2" stroke-width="0.8"/>
+    <line x1="12" y1="36" x2="40" y2="36" stroke="currentColor" stroke-width="0.8" opacity="0.12"/>
+    <line x1="12" y1="40" x2="35" y2="40" stroke="currentColor" stroke-width="0.8" opacity="0.12"/>
+    <line x1="12" y1="44" x2="32" y2="44" stroke="currentColor" stroke-width="0.8" opacity="0.08"/>
+  </svg>
 </body>
 </html>
