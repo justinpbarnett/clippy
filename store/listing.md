@@ -48,7 +48,7 @@ No accounts. No servers. No analytics. Your clipboard data is stored locally and
 
 OPEN SOURCE
 
-Clippy is free and open source. Review the code, file issues, or contribute at github.com/jbarnett/clippy.
+Clippy is free and open source. Review the code, file issues, or contribute at github.com/justinpbarnett/clippy.
 ```
 
 ---
@@ -104,7 +104,7 @@ OPEN SOURCE
 Clippy is free and open source. Review the code, file issues, or contribute on GitHub.
 ```
 
-**Privacy policy URL:** https://jbarnett.github.io/clippy/privacy
+**Privacy policy URL:** https://justinpbarnett.github.io/clippy/privacy
 
 **License:** MIT
 
@@ -114,7 +114,7 @@ Clippy is free and open source. Review the code, file issues, or contribute on G
 
 **Tags / keywords:** clipboard, clipboard manager, clipboard history, paste, productivity, snippets, keyboard
 
-**Homepage URL:** https://github.com/jbarnett/clippy
+**Homepage URL:** https://github.com/justinpbarnett/clippy
 
-**Support URL:** https://github.com/jbarnett/clippy/issues
+**Support URL:** https://github.com/justinpbarnett/clippy/issues
 ```

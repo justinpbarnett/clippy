@@ -5,7 +5,7 @@
 - [ ] Run `npm run build:chrome` and `npm run build:firefox` (clean builds)
 - [ ] Run `npm run zip:chrome` and `npm run zip:firefox`
 - [ ] Confirm version in both manifests matches the intended release
-- [ ] Host privacy policy at https://jbarnett.github.io/clippy/privacy (push docs/ to gh-pages)
+- [ ] Host privacy policy at https://justinpbarnett.github.io/clippy/privacy (push docs/ to gh-pages)
 - [ ] Generate store screenshots: `npm run screenshots`
 
 ---
@@ -24,9 +24,9 @@
 - [ ] Upload screenshots (store/screenshots/chrome-*.png, at least 2)
 - [ ] Upload promo tile: store/screenshots/promo-tile-440x280.png
 - [ ] Upload store icon: src/assets/icons/icon-128.png
-- [ ] Set privacy policy URL: https://jbarnett.github.io/clippy/privacy
+- [ ] Set privacy policy URL: https://justinpbarnett.github.io/clippy/privacy
 - [ ] Set category: Productivity
-- [ ] Set homepage: https://github.com/jbarnett/clippy
+- [ ] Set homepage: https://github.com/justinpbarnett/clippy
 - [ ] In "Privacy practices": mark all data types as NOT collected
 - [ ] Submit for review
 
@@ -51,11 +51,11 @@ First submission with <all_urls> host permission triggers enhanced review. Budge
 - [ ] In the source code submission form, paste the build instructions from BUILDING.md
 - [ ] Fill in listing copy (see store/listing.md)
 - [ ] Upload screenshots (store/screenshots/firefox-*.png)
-- [ ] Set privacy policy URL: https://jbarnett.github.io/clippy/privacy
+- [ ] Set privacy policy URL: https://justinpbarnett.github.io/clippy/privacy
 - [ ] Set category: Productivity
 - [ ] Set license: MIT
-- [ ] Set homepage: https://github.com/jbarnett/clippy
-- [ ] Set support: https://github.com/jbarnett/clippy/issues
+- [ ] Set homepage: https://github.com/justinpbarnett/clippy
+- [ ] Set support: https://github.com/justinpbarnett/clippy/issues
 
 ### Expected review time
 AMO reviews are manual. Budget 1-3 weeks for initial review. Source code review is standard for minified/bundled extensions. BUILDING.md provides the exact commands to reproduce the build.
