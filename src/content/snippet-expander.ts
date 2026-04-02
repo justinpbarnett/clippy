@@ -11,7 +11,7 @@ async function loadSnippets(): Promise<void> {
       payload: undefined,
     }) || [];
   } catch (err) {
-    console.warn('[clippy] failed to load snippets:', err);
+    console.warn('[clipjar] failed to load snippets:', err);
     snippets = [];
   }
 }

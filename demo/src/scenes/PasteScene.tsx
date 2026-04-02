@@ -118,7 +118,7 @@ export const PasteScene: React.FC = () => {
               fontFamily: 'Inter, system-ui, sans-serif',
             }}
           >
-            ⌘V, pasted from Clippy
+            ⌘V, pasted from Clipjar
           </div>
         </div>
       </div>

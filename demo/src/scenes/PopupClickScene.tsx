@@ -35,7 +35,7 @@ export const PopupClickScene: React.FC = () => {
             ))}
           </div>
           <div style={{ flex: 1, background: 'rgba(255,255,255,0.06)', borderRadius: 6, height: 22, display: 'flex', alignItems: 'center', paddingLeft: 10, color: 'rgba(255,255,255,0.35)', fontSize: 11, fontFamily: 'monospace' }}>
-            chrome-extension://clippy
+            chrome-extension://clipjar
           </div>
           <div style={{ width: 20, height: 20, borderRadius: 4, background: 'linear-gradient(135deg, #7c3aed, #4f46e5)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11 }}>📋</div>
         </div>

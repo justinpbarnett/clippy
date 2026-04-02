@@ -1,14 +1,14 @@
-# Clippy
+# Clipjar
 
 Free clipboard manager for Chrome and Firefox. Saves everything you copy, searches in milliseconds, stays local.
 
-![Clippy demo](demo.gif)
+![Clipjar demo](demo.gif)
 
 ## Why
 
 Every clipboard extension on the Chrome Web Store has at least one of these problems: hidden paywalls, broad permissions that read all your data, cloud sync that stores your copies on someone else's server, or slow UI that makes you reach for the mouse.
 
-Clippy has none of them. Everything stays in your browser's local IndexedDB. No network requests. No accounts. No telemetry. No paywall, ever.
+Clipjar has none of them. Everything stays in your browser's local IndexedDB. No network requests. No accounts. No telemetry. No paywall, ever.
 
 ## Features
 
@@ -32,8 +32,8 @@ Clippy has none of them. Everything stays in your browser's local IndexedDB. No 
 Prerequisites: Node.js 18+ and npm.
 
 ```bash
-git clone https://github.com/justinpbarnett/clippy.git
-cd clippy
+git clone https://github.com/justinpbarnett/clipjar.git
+cd clipjar
 npm install
 ```
 
@@ -59,21 +59,21 @@ npm run build:firefox
 
 For a permanent install, package it as a signed XPI via [about:addons](about:addons) or the [Firefox Add-on Hub](https://addons.mozilla.org/developers/).
 
-Pin Clippy to your toolbar and press **Cmd+Shift+V** (Mac) or **Ctrl+Shift+V** (Windows/Linux) to open it.
+Pin Clipjar to your toolbar and press **Cmd+Shift+V** (Mac) or **Ctrl+Shift+V** (Windows/Linux) to open it.
 
 ### Claude Code auto-setup
 
 Paste this into Claude Code and it will clone, build, and tell you exactly what to click:
 
 ```
-Clone https://github.com/justinpbarnett/clippy, install dependencies, build it, then give me the exact steps to load it as an unpacked Chrome extension. Print the absolute path to the dist-chrome/ folder so I can paste it into Chrome.
+Clone https://github.com/justinpbarnett/clipjar, install dependencies, build it, then give me the exact steps to load it as an unpacked Chrome extension. Print the absolute path to the dist-chrome/ folder so I can paste it into Chrome.
 ```
 
 ## Keyboard shortcuts
 
 | Key | Action |
 |-----|--------|
-| **Cmd+Shift+V** | Open Clippy |
+| **Cmd+Shift+V** | Open Clipjar |
 | **Arrow Up/Down** | Navigate clips |
 | **Enter** | Copy selected clip to clipboard |
 | **Escape** | Close popup |
@@ -88,14 +88,14 @@ Shortcuts can be customized at `chrome://extensions/shortcuts`.
 
 Define shortcuts that auto-expand as you type:
 
-1. Open Clippy, switch to the **Snippets** tab
+1. Open Clipjar, switch to the **Snippets** tab
 2. Click **+ New Snippet**
 3. Set a shortcut (e.g. `:sig`) and the expansion text
 4. Type `:sig` in any text field on any page and it expands instantly
 
 ## Settings
 
-Open the options page from `chrome://extensions/` or right-click the Clippy icon and select **Options**.
+Open the options page from `chrome://extensions/` or right-click the Clipjar icon and select **Options**.
 
 - Max clipboard history (default 1000)
 - Theme (system, light, dark)
@@ -133,7 +133,7 @@ Popup UI (380x500px)
 | Side panel | `chrome.sidePanel` | `sidebar_action` (opens via View menu) |
 | Clipboard shortcut | Offscreen document API | Content script relay |
 | Minimum version | Chrome 116+ | Firefox 128+ |
-| Extension ID | Auto-assigned | `clippy@clippy.dev` |
+| Extension ID | Auto-assigned | `clipjar@clipjar.dev` |
 
 Everything else (history, search, favorites, snippets, keyboard nav) works identically in both browsers.
 

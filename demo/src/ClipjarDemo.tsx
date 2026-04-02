@@ -15,7 +15,7 @@ import { OutroScene } from './scenes/OutroScene';
 // Outro:  35f (1.2s)
 // Total: 25+65+115+70+30 = 305 frames (~10s)
 
-export const ClippyDemo: React.FC = () => {
+export const ClipjarDemo: React.FC = () => {
   return (
     <AbsoluteFill style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
       <Background />
@@ -28,7 +28,7 @@ export const ClippyDemo: React.FC = () => {
           <AbsoluteFill>
             <CopyScene />
             <Sequence from={50}>
-              <Callout text="You copy. Clippy saves it." position="bottom" />
+              <Callout text="You copy. Clipjar saves it." position="bottom" />
             </Sequence>
           </AbsoluteFill>
         </Series.Sequence>
@@ -37,7 +37,7 @@ export const ClippyDemo: React.FC = () => {
           <AbsoluteFill>
             <PopupClickScene />
             <Sequence from={20}>
-              <Callout text="Open Clippy. Navigate to any clip." position="bottom" />
+              <Callout text="Open Clipjar. Navigate to any clip." position="bottom" />
             </Sequence>
           </AbsoluteFill>
         </Series.Sequence>

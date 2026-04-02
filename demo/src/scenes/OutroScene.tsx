@@ -46,7 +46,7 @@ export const OutroScene: React.FC = () => {
             marginBottom: 8,
           }}
         >
-          Clippy
+          Clipjar
         </div>
         <div
           style={{

@@ -73,14 +73,14 @@ async function run() {
         timeOffset: 8 * HOUR,
       },
       {
-        content: '{"name": "Clippy", "version": "1.0.0", "description": "Clipboard manager"}',
-        sourceUrl: 'https://github.com/justinpbarnett/clippy/blob/main/package.json',
+        content: '{"name": "Clipjar", "version": "1.0.0", "description": "Clipboard manager"}',
+        sourceUrl: 'https://github.com/justinpbarnett/clipjar/blob/main/package.json',
         sourceTitle: 'GitHub',
         timeOffset: 4 * HOUR,
       },
       {
-        content: "const greeting = 'Hello, World!';\nfunction sayHello(name) {\n  return greeting.replace('World', name);\n}\nconsole.log(sayHello('Clippy'));",
-        sourceUrl: 'https://github.com/justinpbarnett/clippy',
+        content: "const greeting = 'Hello, World!';\nfunction sayHello(name) {\n  return greeting.replace('World', name);\n}\nconsole.log(sayHello('Clipjar'));",
+        sourceUrl: 'https://github.com/justinpbarnett/clipjar',
         sourceTitle: 'GitHub',
         timeOffset: 2 * HOUR + 30 * MINUTE,
       },
@@ -111,7 +111,7 @@ async function run() {
     ];
 
     // Open IndexedDB directly for full control over timestamps
-    const dbReq = indexedDB.open('clippy-db', 1);
+    const dbReq = indexedDB.open('clipjar-db', 1);
     const db = await new Promise((resolve, reject) => {
       dbReq.onsuccess = () => resolve(dbReq.result);
       dbReq.onerror = () => reject(dbReq.error);
@@ -176,10 +176,10 @@ async function run() {
   const appEl = await popupPage.$('#app');
   if (appEl) {
     await appEl.screenshot({
-      path: path.join(screenshotDir, 'clippy-hero.png'),
+      path: path.join(screenshotDir, 'clipjar-hero.png'),
       type: 'png',
     });
-    console.log('Saved: clippy-hero.png');
+    console.log('Saved: clipjar-hero.png');
   }
 
   // Search screenshot
@@ -188,10 +188,10 @@ async function run() {
     await searchInput.fill('github');
     await popupPage.waitForTimeout(400);
     await appEl.screenshot({
-      path: path.join(screenshotDir, 'clippy-search.png'),
+      path: path.join(screenshotDir, 'clipjar-search.png'),
       type: 'png',
     });
-    console.log('Saved: clippy-search.png');
+    console.log('Saved: clipjar-search.png');
     await searchInput.fill('');
     await popupPage.waitForTimeout(300);
   }
@@ -202,10 +202,10 @@ async function run() {
     await favTab.click();
     await popupPage.waitForTimeout(600);
     await appEl.screenshot({
-      path: path.join(screenshotDir, 'clippy-favorites.png'),
+      path: path.join(screenshotDir, 'clipjar-favorites.png'),
       type: 'png',
     });
-    console.log('Saved: clippy-favorites.png');
+    console.log('Saved: clipjar-favorites.png');
   }
 
   await context.close();

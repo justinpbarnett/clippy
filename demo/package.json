@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "studio": "npx remotion studio src/index.ts",
-    "render": "npx remotion render src/index.ts ClippyDemo out/demo.mp4 --codec h264 --width 1920 --height 1080 --fps 30 --crf 18",
-    "render:gif": "npx remotion render src/index.ts ClippyDemo out/demo.gif --width 960 --height 540",
+    "render": "npx remotion render src/index.ts ClipjarDemo out/demo.mp4 --codec h264 --width 1920 --height 1080 --fps 30 --crf 18",
+    "render:gif": "npx remotion render src/index.ts ClipjarDemo out/demo.gif --width 960 --height 540",
     "record": "node ../tests/record-demo.mjs"
   },
   "keywords": [],

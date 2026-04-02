@@ -93,7 +93,7 @@ async function handleSaveSnippet(payload: SaveSnippetPayload): Promise<ClipEntry
         chrome.tabs.sendMessage(tab.id, { type: MessageType.SNIPPETS_UPDATED }).catch(() => {});
       }
     }
-  }).catch((err) => console.error('[clippy] tabs.query failed:', err));
+  }).catch((err) => console.error('[clipjar] tabs.query failed:', err));
   return clip;
 }
 

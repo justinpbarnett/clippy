@@ -19,30 +19,30 @@ const TEST_CLIPS = [
   { content: 'The database migration completed successfully with zero downtime', type: 'text', sourceUrl: 'https://slack.com', sourceTitle: 'Slack' },
   { content: 'Remember to pick up groceries on the way home', type: 'text', sourceUrl: 'https://messages.google.com', sourceTitle: 'Messages' },
   { content: 'Meeting notes from the product review: ship the MVP by end of sprint', type: 'text', sourceUrl: 'https://docs.google.com/doc/meeting-notes', sourceTitle: 'Google Docs' },
-  { content: '{"name": "Clippy", "version": "1.0.0", "private": true}', type: 'json', sourceUrl: 'https://github.com/justinpbarnett/clippy', sourceTitle: 'GitHub' },
-  { content: "const greeting = 'Hello, World!';\nfunction sayHello(name) {\n  return greeting.replace('World', name);\n}\nconsole.log(sayHello('Clippy'));", type: 'code', sourceUrl: 'https://github.com/justinpbarnett/clippy', sourceTitle: 'GitHub' },
+  { content: '{"name": "Clipjar", "version": "1.0.0", "private": true}', type: 'json', sourceUrl: 'https://github.com/justinpbarnett/clipjar', sourceTitle: 'GitHub' },
+  { content: "const greeting = 'Hello, World!';\nfunction sayHello(name) {\n  return greeting.replace('World', name);\n}\nconsole.log(sayHello('Clipjar'));", type: 'code', sourceUrl: 'https://github.com/justinpbarnett/clipjar', sourceTitle: 'GitHub' },
   { content: '+1 (555) 867-5309', type: 'phone', sourceUrl: 'https://contacts.example.com', sourceTitle: 'Contacts' },
   { content: 'hello@example.com', type: 'email', sourceUrl: 'https://mail.example.com', sourceTitle: 'Mail' },
-  { content: 'https://github.com/justinpbarnett/clippy', type: 'url', sourceUrl: 'https://github.com', sourceTitle: 'GitHub' },
+  { content: 'https://github.com/justinpbarnett/clipjar', type: 'url', sourceUrl: 'https://github.com', sourceTitle: 'GitHub' },
   { content: 'The quick brown fox jumps over the lazy dog near the riverbank', type: 'text', sourceUrl: 'https://example.com', sourceTitle: 'Example' },
 ];
 
 const TEST_HTML = `<!DOCTYPE html>
 <html>
-<head><title>Clippy Test Page</title></head>
+<head><title>Clipjar Test Page</title></head>
 <body style="font-family: system-ui; padding: 40px; max-width: 800px; margin: 0 auto;">
-  <h1>Clippy Integration Test</h1>
+  <h1>Clipjar Integration Test</h1>
 
   <p id="plain-text">The quick brown fox jumps over the lazy dog near the riverbank</p>
-  <p id="url-text">https://github.com/justinpbarnett/clippy</p>
+  <p id="url-text">https://github.com/justinpbarnett/clipjar</p>
   <p id="email-text">hello@example.com</p>
   <p id="phone-text">+1 (555) 867-5309</p>
   <pre id="code-text">const greeting = 'Hello, World!';
 function sayHello(name) {
   return greeting.replace('World', name);
 }
-console.log(sayHello('Clippy'));</pre>
-  <pre id="json-text">{"name": "Clippy", "version": "1.0.0", "private": true}</pre>
+console.log(sayHello('Clipjar'));</pre>
+  <pre id="json-text">{"name": "Clipjar", "version": "1.0.0", "private": true}</pre>
   <p id="text-2">Meeting notes from the product review: ship the MVP by end of sprint</p>
   <p id="text-3">Remember to pick up groceries on the way home</p>
   <p id="text-4">The database migration completed successfully with zero downtime</p>
@@ -54,7 +54,7 @@ console.log(sayHello('Clippy'));</pre>
 
 async function runChrome() {
   const extensionPath = path.resolve(__dirname, '..', 'dist-chrome');
-  console.log('Launching Chrome with Clippy extension...');
+  console.log('Launching Chrome with Clipjar extension...');
 
   const context = await chromium.launchPersistentContext('', {
     headless: false,
@@ -85,7 +85,7 @@ async function runChrome() {
   const testPage = await context.newPage();
 
   // Intercept a real URL and serve our test HTML so content scripts inject
-  await testPage.route('https://test.clippy.local/**', (route) => {
+  await testPage.route('https://test.clipjar.local/**', (route) => {
     route.fulfill({
       status: 200,
       contentType: 'text/html',
@@ -93,7 +93,7 @@ async function runChrome() {
     });
   });
 
-  await testPage.goto('https://test.clippy.local/test');
+  await testPage.goto('https://test.clipjar.local/test');
   await testPage.waitForTimeout(1500); // Content script injection time
 
   // Verify content script injected
@@ -175,9 +175,9 @@ async function runChrome() {
 
 async function runFirefox() {
   const extensionPath = path.resolve(__dirname, '..', 'dist-firefox');
-  console.log('Launching Firefox with Clippy extension...');
+  console.log('Launching Firefox with Clipjar extension...');
 
-  const userDataDir = fs.mkdtempSync(path.join(os.tmpdir(), 'ff-clippy-'));
+  const userDataDir = fs.mkdtempSync(path.join(os.tmpdir(), 'ff-clipjar-'));
 
   const context = await firefox.launchPersistentContext(userDataDir, {
     headless: false,
@@ -202,7 +202,7 @@ async function runFirefox() {
         const items = document.querySelectorAll('.card');
         for (const item of items) {
           const name = item.querySelector('.card-name')?.textContent;
-          if (name?.includes('Clippy')) {
+          if (name?.includes('Clipjar')) {
             const uuid = item.querySelector('.extension-id')?.textContent;
             return uuid?.trim() ?? null;
           }
@@ -379,7 +379,7 @@ async function runCommonTests(popupPage, context, extensionId, browser) {
     { name: 'Pin/favorite toggle', pass: starBtn !== null },
     { name: 'Tab switching (All/Favorites/Snippets)', pass: favTab !== null && snippetTab !== null },
     { name: 'Keyboard navigation', pass: selectedIdx >= 0 },
-    { name: 'Options page renders', pass: optTitle === 'Clippy Settings' },
+    { name: 'Options page renders', pass: optTitle === 'Clipjar Settings' },
   ];
 
   printSummary(results);
@@ -417,7 +417,7 @@ async function seedViaPopup(popupPage) {
 // Seed data directly via IndexedDB (works for both Chrome and Firefox extension pages)
 async function seedViaIDB(popupPage) {
   await popupPage.evaluate(async (clips) => {
-    const dbReq = indexedDB.open('clippy-db', 1);
+    const dbReq = indexedDB.open('clipjar-db', 1);
     const db = await new Promise((resolve, reject) => {
       dbReq.onsuccess = () => resolve(dbReq.result);
       dbReq.onerror = () => reject(dbReq.error);

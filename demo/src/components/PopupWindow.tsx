@@ -117,9 +117,9 @@ export const PopupWindow: React.FC<PopupWindowProps> = ({
             fontFamily: 'monospace',
           }}
         >
-          chrome-extension://clippy
+          chrome-extension://clipjar
         </div>
-        {/* Clippy icon */}
+        {/* Clipjar icon */}
         <div
           style={{
             width: 20,

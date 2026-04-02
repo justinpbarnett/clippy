@@ -1,4 +1,4 @@
-# Clippy: Chrome Clipboard Manager Extension
+# Clipjar: Chrome Clipboard Manager Extension
 
 ## Tech stack
 - Chrome Extension Manifest V3

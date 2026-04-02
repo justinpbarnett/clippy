@@ -30,8 +30,8 @@ const CLIPS = [
   { content: 'Database migration completed with zero downtime', sourceTitle: 'Slack', sourceUrl: 'https://app.slack.com', offset: 86400000 + 2 * 3600000 },
   { content: 'Remember to pick up groceries: eggs, milk, bread, avocados', sourceTitle: 'Google Keep', sourceUrl: 'https://keep.google.com', offset: 22 * 3600000 },
   { content: 'Meeting notes: ship the MVP by end of sprint', sourceTitle: 'Notion', sourceUrl: 'https://notion.so', offset: 8 * 3600000 },
-  { content: '{"name":"Clippy","version":"1.0.0","description":"Clipboard manager"}', sourceTitle: 'GitHub', sourceUrl: 'https://github.com', offset: 4 * 3600000 },
-  { content: "const greet = (name) => `Hello, ${name}!`;\nconsole.log(greet('Clippy'));", sourceTitle: 'GitHub', sourceUrl: 'https://github.com', offset: 2 * 3600000 },
+  { content: '{"name":"Clipjar","version":"1.0.0","description":"Clipboard manager"}', sourceTitle: 'GitHub', sourceUrl: 'https://github.com', offset: 4 * 3600000 },
+  { content: "const greet = (name) => `Hello, ${name}!`;\nconsole.log(greet('Clipjar'));", sourceTitle: 'GitHub', sourceUrl: 'https://github.com', offset: 2 * 3600000 },
   { content: 'contact@example.com', sourceTitle: 'Mail', sourceUrl: 'https://mail.example.com', offset: 22 * 60000 },
   { content: 'https://github.com/example/project', sourceTitle: 'GitHub', sourceUrl: 'https://github.com', offset: 8 * 60000 },
   { content: 'The quick brown fox jumps over the lazy dog', sourceTitle: 'Example', sourceUrl: 'https://example.com', offset: 2 * 60000 },
@@ -40,7 +40,7 @@ const CLIPS = [
 async function seed(page) {
   await page.evaluate(async (clips) => {
     return new Promise((resolve, reject) => {
-      const req = indexedDB.open('clippy-db', 1);
+      const req = indexedDB.open('clipjar-db', 1);
       req.onupgradeneeded = (e) => {
         const d = e.target.result;
         if (!d.objectStoreNames.contains('clips')) {
@@ -144,7 +144,7 @@ img { display: block; width: 380px; height: 500px; }
   <div class="left">
     <div class="logo">
       <span class="logo-icon">📋</span>
-      <span class="logo-name">Clippy</span>
+      <span class="logo-name">Clipjar</span>
     </div>
     <h1>${title}</h1>
     <p>${subtitle}</p>
@@ -203,7 +203,7 @@ body::before {
 </head>
 <body>
   <div class="icon">📋</div>
-  <div class="name">Clippy</div>
+  <div class="name">Clipjar</div>
   <div class="tag">Free. Private. Keyboard-first.</div>
   <div class="badge">Clipboard Manager</div>
 </body>
@@ -249,7 +249,7 @@ async function run() {
     fs.writeFileSync(framePath, frameHtml(
       rawPath,
       'Your clipboard history,<br>always within reach',
-      'Clippy saves everything you copy with source, timestamp, and type detection. Get it back in one keystroke.',
+      'Clipjar saves everything you copy with source, timestamp, and type detection. Get it back in one keystroke.',
     ));
     const fp = await context.newPage();
     await fp.setViewportSize({ width: 1280, height: 800 });
@@ -326,14 +326,14 @@ async function run() {
     const page = await openPopup(context, extensionId);
     await page.evaluate(async () => {
       const db = await new Promise((resolve, reject) => {
-        const r = indexedDB.open('clippy-db', 1);
+        const r = indexedDB.open('clipjar-db', 1);
         r.onsuccess = () => resolve(r.result);
         r.onerror = () => reject(r.error);
       });
       const snippets = [
-        { shortcut: ':br',    content: 'Best regards,\nThe Clippy Team' },
+        { shortcut: ':br',    content: 'Best regards,\nThe Clipjar Team' },
         { shortcut: ':addr',  content: '123 Main Street, Atlanta, GA 30301' },
-        { shortcut: ':meet',  content: 'Happy to find time to connect. Here is my calendar link: cal.example.com/clippy' },
+        { shortcut: ':meet',  content: 'Happy to find time to connect. Here is my calendar link: cal.example.com/clipjar' },
         { shortcut: ':ty',    content: 'Thank you for reaching out! I will follow up shortly.' },
       ];
       const now = Date.now();
@@ -432,7 +432,7 @@ img { display: block; width: 560px; }
   <div class="left">
     <div class="logo">
       <span class="logo-icon">📋</span>
-      <span class="logo-name">Clippy</span>
+      <span class="logo-name">Clipjar</span>
     </div>
     <h1>Customize to your workflow</h1>
     <p>Set your history limit, choose a theme, control snippet expansion, and manage your data.</p>

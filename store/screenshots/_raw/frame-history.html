@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  width: 1280px; height: 800px; overflow: hidden;
+  background: radial-gradient(ellipse at 65% 40%, #1e0a4a 0%, #0d0620 40%, #050210 100%);
+  display: flex; align-items: center; padding: 0 80px; gap: 80px;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+body::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: linear-gradient(rgba(109,40,217,0.06) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(109,40,217,0.06) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+.left { flex: 1; position: relative; z-index: 1; }
+.logo { display: flex; align-items: center; gap: 12px; margin-bottom: 36px; }
+.logo-icon { font-size: 32px; }
+.logo-name { font-size: 22px; font-weight: 700; color: rgba(255,255,255,0.9); letter-spacing: -0.01em; }
+h1 {
+  font-size: 46px; font-weight: 800; line-height: 1.1;
+  letter-spacing: -0.03em; color: #fff; margin-bottom: 20px;
+}
+p {
+  font-size: 20px; line-height: 1.6;
+  color: rgba(255,255,255,0.55); max-width: 380px;
+}
+.right { position: relative; z-index: 1; flex-shrink: 0; }
+.browser-chrome {
+  background: #1c1c2e;
+  border-radius: 12px;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.08),
+              0 0 60px rgba(109,40,217,0.3);
+  overflow: hidden;
+}
+.browser-bar {
+  padding: 10px 14px;
+  display: flex; align-items: center; gap: 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.dot { width: 10px; height: 10px; border-radius: 50%; }
+.dot-r { background: #ff5f57; }
+.dot-y { background: #febc2e; }
+.dot-g { background: #28c840; }
+img { display: block; width: 380px; height: 500px; }
+</style>
+</head>
+<body>
+  <div class="left">
+    <div class="logo">
+      <span class="logo-icon">📋</span>
+      <span class="logo-name">Clipjar</span>
+    </div>
+    <h1>Your clipboard history,<br>always within reach</h1>
+    <p>Clipjar saves everything you copy with source, timestamp, and type detection. Get it back in one keystroke.</p>
+  </div>
+  <div class="right">
+    <div class="browser-chrome">
+      <div class="browser-bar">
+        <div class="dot dot-r"></div>
+        <div class="dot dot-y"></div>
+        <div class="dot dot-g"></div>
+      </div>
+      <img src="popup-history.png" />
+    </div>
+  </div>
+</body>
+</html>

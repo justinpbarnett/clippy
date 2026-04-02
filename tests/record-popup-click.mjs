@@ -47,7 +47,7 @@ async function run() {
   // Seed clips — "database migration" is item 3 (offset puts it third by recency)
   await page.evaluate(async () => {
     return new Promise((resolve, reject) => {
-      const req = indexedDB.open('clippy-db', 1);
+      const req = indexedDB.open('clipjar-db', 1);
       req.onupgradeneeded = (e) => {
         const d = e.target.result;
         if (!d.objectStoreNames.contains('clips')) {

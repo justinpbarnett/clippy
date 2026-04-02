@@ -1,4 +1,4 @@
-# Building Clippy from Source
+# Building Clipjar from Source
 
 These instructions are provided for Firefox Add-on Marketplace reviewers who need to verify the submitted build.
 
@@ -24,10 +24,10 @@ npm run build:firefox
 
 # Package it
 npm run zip:firefox
-# Output: clippy-firefox.zip
+# Output: clipjar-firefox.zip
 ```
 
-The resulting `clippy-firefox.zip` contains the same files as the submitted package.
+The resulting `clipjar-firefox.zip` contains the same files as the submitted package.
 
 ## Build output
 
@@ -41,7 +41,7 @@ The resulting `clippy-firefox.zip` contains the same files as the submitted pack
 ```bash
 npm run build:chrome
 npm run zip:chrome
-# Output: clippy-chrome.zip
+# Output: clipjar-chrome.zip
 ```
 
 ## Verify

@@ -14,7 +14,7 @@ async function init() {
   root.className = 'max-w-lg mx-auto p-6 font-sans';
 
   const title = document.createElement('h1');
-  title.textContent = 'Clippy Settings';
+  title.textContent = 'Clipjar Settings';
   title.className = 'text-2xl font-bold mb-6 text-gray-900';
   root.appendChild(title);
 
@@ -140,7 +140,7 @@ async function handleExport() {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `clippy-backup-${new Date().toISOString().slice(0, 10)}.json`;
+  a.download = `clipjar-backup-${new Date().toISOString().slice(0, 10)}.json`;
   a.click();
   URL.revokeObjectURL(url);
 

@@ -70,7 +70,7 @@ export const IntroScene: React.FC = () => {
           marginBottom: 20,
         }}
       >
-        Clippy
+        Clipjar
       </div>
 
       {/* Subtitle */}

@@ -1,5 +1,5 @@
 {
-  "name": "clippy",
+  "name": "clipjar",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -14,8 +14,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "zip": "npm run zip:chrome",
-    "zip:chrome": "cd dist-chrome && zip -r ../clippy-chrome.zip .",
-    "zip:firefox": "cd dist-firefox && zip -r ../clippy-firefox.zip .",
+    "zip:chrome": "cd dist-chrome && zip -r ../clipjar-chrome.zip .",
+    "zip:firefox": "cd dist-firefox && zip -r ../clipjar-firefox.zip .",
     "screenshots": "node tests/store-screenshots.mjs"
   },
   "dependencies": {

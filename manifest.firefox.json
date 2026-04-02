@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Clippy",
+  "name": "Clipjar",
   "version": "1.0.0",
   "description": "The clipboard manager Firefox deserves. Free, private, keyboard-first.",
   "permissions": [
@@ -37,7 +37,7 @@
     }
   },
   "sidebar_action": {
-    "default_title": "Clippy",
+    "default_title": "Clipjar",
     "default_panel": "src/sidepanel/index.html"
   },
   "options_ui": {
@@ -50,7 +50,7 @@
         "default": "Ctrl+Shift+V",
         "mac": "Command+Shift+V"
       },
-      "description": "Open Clippy clipboard history"
+      "description": "Open Clipjar clipboard history"
     },
     "copy-first": {
       "suggested_key": {
@@ -67,7 +67,7 @@
   },
   "browser_specific_settings": {
     "gecko": {
-      "id": "clippy@clippy.dev",
+      "id": "clipjar@clipjar.dev",
       "strict_min_version": "128.0"
     }
   }

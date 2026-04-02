@@ -9,7 +9,7 @@ export function renderHelpOverlay(container: HTMLElement): () => void {
 
   const title = document.createElement('span');
   title.className = 'text-sm font-semibold text-gray-900 dark:text-gray-100';
-  title.textContent = 'How to use Clippy';
+  title.textContent = 'How to use Clipjar';
 
   const closeBtn = document.createElement('button');
   closeBtn.textContent = '✕';

@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Clippy",
+  "name": "Clipjar",
   "version": "1.0.0",
   "description": "The clipboard manager Chrome deserves. Free, private, keyboard-first.",
   "permissions": [
@@ -51,7 +51,7 @@
         "default": "Ctrl+Shift+V",
         "mac": "Command+Shift+V"
       },
-      "description": "Open Clippy clipboard history"
+      "description": "Open Clipjar clipboard history"
     },
     "copy-first": {
       "suggested_key": {

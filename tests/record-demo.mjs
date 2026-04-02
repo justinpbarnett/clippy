@@ -53,13 +53,13 @@ const TEST_CLIPS = [
     timeOffset: 8 * 3600000,
   },
   {
-    content: '{"name":"Clippy","version":"1.0.0","description":"Clipboard manager"}',
+    content: '{"name":"Clipjar","version":"1.0.0","description":"Clipboard manager"}',
     sourceTitle: 'GitHub',
     sourceUrl: 'https://github.com',
     timeOffset: 4 * 3600000,
   },
   {
-    content: "const greet = (name) => `Hello, ${name}!`;\nconsole.log(greet('Clippy'));",
+    content: "const greet = (name) => `Hello, ${name}!`;\nconsole.log(greet('Clipjar'));",
     sourceTitle: 'GitHub',
     sourceUrl: 'https://github.com',
     timeOffset: 2 * 3600000,
@@ -94,7 +94,7 @@ async function seedOnce(page) {
   // Clear existing clips then insert fresh test data
   await page.evaluate(async (clips) => {
     return new Promise((resolve, reject) => {
-      const req = indexedDB.open('clippy-db', 1);
+      const req = indexedDB.open('clipjar-db', 1);
       req.onupgradeneeded = (e) => {
         const d = e.target.result;
         if (!d.objectStoreNames.contains('clips')) {
@@ -298,7 +298,7 @@ async function run() {
     if (await textarea.count() > 0) {
       await textarea.click();
       await page.waitForTimeout(150);
-      for (const ch of 'Best regards,\nThe Clippy Team') {
+      for (const ch of 'Best regards,\nThe Clipjar Team') {
         await page.keyboard.type(ch);
         await page.waitForTimeout(50);
       }

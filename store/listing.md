@@ -12,9 +12,9 @@ Free clipboard manager. Saves everything you copy. Search, pin, and paste it bac
 **Detailed description:**
 
 ```
-Clippy saves everything you copy so you can find it again in seconds.
+Clipjar saves everything you copy so you can find it again in seconds.
 
-Copy text and Clippy captures it with the source URL, timestamp, and content type. Hit Cmd+Shift+V (or Ctrl+Shift+V) to open the popup, type to search, arrow keys to navigate, Enter to paste.
+Copy text and Clipjar captures it with the source URL, timestamp, and content type. Hit Cmd+Shift+V (or Ctrl+Shift+V) to open the popup, type to search, arrow keys to navigate, Enter to paste.
 
 FEATURES
 
@@ -40,15 +40,15 @@ Keyboard first
 Navigate everything with the keyboard. Open, search, select, copy, delete, switch tabs. Mouse optional.
 
 Sidebar panel
-Pin Clippy as a sidebar next to whatever page you're on.
+Pin Clipjar as a sidebar next to whatever page you're on.
 
 PRIVACY
 
-No accounts. No servers. No analytics. Your clipboard data stays on your machine. The clipboardRead permission is optional; Clippy only asks for it if you turn it on in settings.
+No accounts. No servers. No analytics. Your clipboard data stays on your machine. The clipboardRead permission is optional; Clipjar only asks for it if you turn it on in settings.
 
 OPEN SOURCE
 
-Free and open source. Read the code, file issues, or contribute at github.com/justinpbarnett/clippy.
+Free and open source. Read the code, file issues, or contribute at github.com/justinpbarnett/clipjar.
 ```
 
 ---
@@ -65,9 +65,9 @@ Free clipboard manager that saves everything you copy. Search your history, pin 
 **Description:**
 
 ```
-Clippy saves everything you copy so you can find it again in seconds.
+Clipjar saves everything you copy so you can find it again in seconds.
 
-Copy text and Clippy captures it with the source URL, timestamp, and content type. Hit Ctrl+Shift+V to open the popup, type to search, arrow keys to navigate, Enter to paste.
+Copy text and Clipjar captures it with the source URL, timestamp, and content type. Hit Ctrl+Shift+V to open the popup, type to search, arrow keys to navigate, Enter to paste.
 
 FEATURES
 
@@ -93,18 +93,18 @@ Keyboard first
 Navigate everything with the keyboard. Open, search, select, copy, delete, switch tabs. Mouse optional.
 
 Sidebar panel
-Pin Clippy as a sidebar next to whatever page you're on.
+Pin Clipjar as a sidebar next to whatever page you're on.
 
 PRIVACY
 
-No accounts. No servers. No analytics. Your clipboard data stays on your machine. The clipboardRead permission is optional; Clippy only asks for it if you turn it on in settings. Full privacy policy at the link below.
+No accounts. No servers. No analytics. Your clipboard data stays on your machine. The clipboardRead permission is optional; Clipjar only asks for it if you turn it on in settings. Full privacy policy at the link below.
 
 OPEN SOURCE
 
 Free and open source. Read the code, file issues, or contribute on GitHub.
 ```
 
-**Privacy policy URL:** https://justinpbarnett.github.io/clippy/privacy
+**Privacy policy URL:** https://justinpbarnett.github.io/clipjar/privacy
 
 **License:** MIT
 
@@ -114,7 +114,7 @@ Free and open source. Read the code, file issues, or contribute on GitHub.
 
 **Tags / keywords:** clipboard, clipboard manager, clipboard history, paste, productivity, snippets, keyboard
 
-**Homepage URL:** https://github.com/justinpbarnett/clippy
+**Homepage URL:** https://github.com/justinpbarnett/clipjar
 
-**Support URL:** https://github.com/justinpbarnett/clippy/issues
+**Support URL:** https://github.com/justinpbarnett/clipjar/issues
 ```
