@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "npm run build:chrome",
     "build:chrome": "vite build",
-    "build:firefox": "vite build --config vite.config.firefox.ts",
+    "build:firefox": "vite build --config vite.config.firefox.ts && mkdir -p dist-firefox/src/assets/icons && cp src/assets/icons/*.png dist-firefox/src/assets/icons/",
     "preview": "vite preview",
     "lint": "eslint src/",
     "typecheck": "tsc --noEmit",

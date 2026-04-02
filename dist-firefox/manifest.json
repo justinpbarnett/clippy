@@ -16,7 +16,6 @@
     "<all_urls>"
   ],
   "background": {
-    "type": "module",
     "page": "background.html"
   },
   "content_scripts": [
@@ -81,7 +80,8 @@
         "assets/constants-C6QKiUsO.js",
         "assets/src/content/clipboard-capture-DdQ3J9HN.js",
         "assets/src/content/snippet-expander-DhNCdAAq.js",
-        "assets/types-DAQ-VXlD.js"
+        "assets/types-DAQ-VXlD.js",
+        "src/sidepanel/index.html"
       ],
       "matches": [
         "<all_urls>"
