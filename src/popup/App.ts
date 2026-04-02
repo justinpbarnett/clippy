@@ -16,8 +16,8 @@ export function initApp(root: HTMLElement): void {
   const store = createStore<PopupState>(initialState);
   let allClips: ClipEntry[] = [];
 
-  // Layout
-  root.className = 'relative w-[380px] max-h-[500px] flex flex-col bg-white dark:bg-gray-900';
+  root.className = 'relative flex flex-col';
+  root.style.cssText = 'width:380px;max-height:500px;overflow:hidden;background:var(--j-surface)';
 
   const showHelp = renderHelpOverlay(root);
   renderTabBar(root, store, showHelp);
@@ -30,7 +30,6 @@ export function initApp(root: HTMLElement): void {
   renderSnippetButton(root, store, snippetEditorEl);
   renderStatusBar(root, store);
 
-  // Load clips on tab change; filter on query change
   let prevTab = store.getState().activeTab;
   let prevQuery = store.getState().query;
 
@@ -46,11 +45,9 @@ export function initApp(root: HTMLElement): void {
     }
   });
 
-  // Initial load
   fetchClips();
   loadCount();
 
-  // Keyboard navigation
   document.addEventListener('keydown', (e) => handleKeydown(e, store));
 
   async function fetchClips(): Promise<void> {
@@ -59,7 +56,7 @@ export function initApp(root: HTMLElement): void {
       type: MessageType.GET_CLIPS,
       payload: {
         tab: store.getState().activeTab,
-        limit: PAGE_SIZE * 20, // fetch more for client-side search
+        limit: PAGE_SIZE * 20,
         offset: 0,
       },
     }) || [];
@@ -163,9 +160,7 @@ export function initApp(root: HTMLElement): void {
 
 function renderStatusBar(container: HTMLElement, store: Store<PopupState>): void {
   const bar = document.createElement('div');
-  bar.className =
-    'px-3 py-1 text-[10px] text-gray-400 border-t border-gray-200 dark:border-gray-700 ' +
-    'flex justify-between items-center flex-shrink-0';
+  bar.className = 'jar-status';
 
   const countSpan = document.createElement('span');
   const hintsSpan = document.createElement('span');
@@ -188,25 +183,17 @@ function renderSnippetButton(
   editorEl: SnippetEditorElement,
 ): void {
   const wrapper = document.createElement('div');
-  wrapper.className = 'hidden px-3 py-1 border-t border-gray-200 dark:border-gray-700 flex-shrink-0';
+  wrapper.className = 'jar-snippet-btn-wrap hidden';
 
   const btn = document.createElement('button');
   btn.textContent = '+ New Snippet';
-  btn.className =
-    'w-full py-1 text-xs text-blue-500 hover:text-blue-600 dark:text-blue-400 ' +
-    'dark:hover:text-blue-300 font-medium';
-  btn.addEventListener('click', () => {
-    editorEl.show();
-  });
+  btn.className = 'jar-snippet-add';
+  btn.addEventListener('click', () => editorEl.show());
 
   wrapper.appendChild(btn);
   container.insertBefore(wrapper, container.lastElementChild);
 
   store.subscribe((state) => {
-    if (state.activeTab === 'snippets') {
-      wrapper.classList.remove('hidden');
-    } else {
-      wrapper.classList.add('hidden');
-    }
+    wrapper.classList.toggle('hidden', state.activeTab !== 'snippets');
   });
 }

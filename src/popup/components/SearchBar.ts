@@ -3,16 +3,18 @@ import type { PopupState } from '../state';
 
 export function renderSearchBar(container: HTMLElement, store: Store<PopupState>): void {
   const wrapper = document.createElement('div');
-  wrapper.className = 'px-3 py-2';
+  wrapper.className = 'jar-search-wrap';
+
+  const icon = document.createElement('span');
+  icon.className = 'jar-search-icon';
+  icon.textContent = '⌕';
+  wrapper.appendChild(icon);
 
   const input = document.createElement('input');
   input.type = 'text';
   input.id = 'search';
-  input.placeholder = 'Search clips...';
-  input.className =
-    'w-full px-3 py-1.5 rounded-md bg-gray-100 dark:bg-gray-800 text-sm ' +
-    'border border-transparent focus:border-blue-500 outline-none ' +
-    'text-gray-900 dark:text-gray-100 placeholder-gray-400';
+  input.placeholder = 'search clips...';
+  input.className = 'jar-search';
 
   let debounceTimer: ReturnType<typeof setTimeout>;
 
@@ -24,9 +26,7 @@ export function renderSearchBar(container: HTMLElement, store: Store<PopupState>
   });
 
   store.subscribe((state) => {
-    if (input.value !== state.query) {
-      input.value = state.query;
-    }
+    if (input.value !== state.query) input.value = state.query;
   });
 
   wrapper.appendChild(input);

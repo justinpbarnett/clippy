@@ -13,10 +13,10 @@ export function renderClipList(
 ): void {
   const listEl = document.createElement('div');
   listEl.id = 'clip-list';
-  listEl.className = 'flex-1 overflow-y-auto min-h-0';
+  listEl.className = 'jar-list';
 
   const emptyEl = document.createElement('div');
-  emptyEl.className = 'px-4 py-8 text-center text-sm text-gray-400';
+  emptyEl.className = 'jar-empty';
 
   function render(state: PopupState) {
     listEl.replaceChildren();
@@ -29,7 +29,7 @@ export function renderClipList(
 
     if (state.clips.length === 0) {
       if (state.query) {
-        emptyEl.textContent = 'No matches found';
+        emptyEl.textContent = 'No matches found.';
       } else if (state.activeTab === 'favorites') {
         emptyEl.textContent = 'No favorites yet. Star a clip to pin it here.';
       } else if (state.activeTab === 'snippets') {
@@ -48,7 +48,6 @@ export function renderClipList(
       listEl.appendChild(el);
     }
 
-    // Scroll selected item into view
     const selectedEl = listEl.children[state.selectedIndex] as HTMLElement | undefined;
     selectedEl?.scrollIntoView({ block: 'nearest' });
   }

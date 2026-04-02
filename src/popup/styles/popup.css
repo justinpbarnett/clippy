@@ -2,9 +2,446 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   CLIPJAR  ·  Amber Apothecary
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+:root {
+  --j-surface: #0D0A06;
+  --j-glass:   #141009;
+  --j-raised:  #1C1509;
+  --j-border:  #2C1D0A;
+  --j-mid:     #3C2A10;
+  --j-amber:   #C87A38;
+  --j-gold:    #E8A848;
+  --j-glow:    #F5C060;
+  --j-cream:   #EED9B5;
+  --j-muted:   #9A7A52;
+  --j-dim:     #5A4030;
+}
+
+*,*::before,*::after { box-sizing: border-box; }
+
 body {
   width: 380px;
   max-height: 500px;
   margin: 0;
   overflow: hidden;
+  background: var(--j-surface);
+  color: var(--j-cream);
+  font-family: ui-monospace,'Cascadia Code','JetBrains Mono','Fira Code','Courier New',monospace;
+  font-size: 12px;
+  -webkit-font-smoothing: antialiased;
+}
+
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--j-border); border-radius: 2px; }
+
+/* ── Header ── */
+.jar-header {
+  display: flex;
+  align-items: center;
+  background: var(--j-glass);
+  border-bottom: 1px solid var(--j-border);
+  padding: 0 10px 0 12px;
+  flex-shrink: 0;
+}
+
+.jar-logo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 10px 9px 0;
+  margin-right: 8px;
+  border-right: 1px solid var(--j-border);
+  flex-shrink: 0;
+}
+
+.jar-logotype {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--j-amber);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  line-height: 1;
+}
+
+.jar-tabs { display: flex; align-items: center; flex: 1; }
+
+.jar-tab {
+  padding: 10px 9px 9px;
+  font-size: 9.5px;
+  font-weight: 600;
+  color: var(--j-dim);
+  border: none;
+  background: none;
+  cursor: pointer;
+  position: relative;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: color 0.15s;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.jar-tab:hover { color: var(--j-muted); }
+.jar-tab.active { color: var(--j-gold); }
+.jar-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 9px;
+  right: 9px;
+  height: 1.5px;
+  background: var(--j-gold);
+}
+
+.jar-help {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid var(--j-border);
+  background: none;
+  color: var(--j-dim);
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.15s;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  margin-left: auto;
+}
+
+.jar-help:hover { border-color: var(--j-amber); color: var(--j-amber); }
+
+/* ── Search ── */
+.jar-search-wrap {
+  padding: 8px 10px;
+  flex-shrink: 0;
+  background: var(--j-surface);
+  border-bottom: 1px solid var(--j-border);
+  position: relative;
+}
+
+.jar-search-icon {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--j-dim);
+  font-size: 13px;
+  pointer-events: none;
+  line-height: 1;
+}
+
+.jar-search {
+  width: 100%;
+  background: var(--j-glass);
+  border: 1px solid var(--j-border);
+  border-radius: 3px;
+  padding: 6px 10px 6px 28px;
+  color: var(--j-cream);
+  font-size: 11.5px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.jar-search::placeholder { color: var(--j-dim); }
+.jar-search:focus { border-color: var(--j-amber); }
+
+/* ── List ── */
+.jar-list { flex: 1; overflow-y: auto; min-height: 0; background: var(--j-surface); }
+
+.jar-empty {
+  padding: 36px 20px;
+  text-align: center;
+  color: var(--j-dim);
+  font-size: 10.5px;
+  line-height: 1.7;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
+/* ── Clip Item ── */
+.jar-clip {
+  display: flex;
+  align-items: center;
+  padding: 7px 10px 7px 11px;
+  cursor: pointer;
+  border-left: 2px solid transparent;
+  border-bottom: 1px solid var(--j-glass);
+  transition: background 0.1s, border-color 0.1s;
+  gap: 8px;
+}
+
+.jar-clip:hover { background: var(--j-glass); }
+.jar-clip.selected { background: var(--j-glass); border-left-color: var(--j-amber); }
+
+.jar-clip-body { flex: 1; min-width: 0; }
+
+.jar-clip-text {
+  font-size: 11.5px;
+  color: var(--j-cream);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.4;
+}
+
+.jar-clip-shortcut { color: var(--j-gold); margin-right: 6px; font-size: 11px; }
+
+.jar-clip-meta { display: flex; align-items: center; gap: 5px; margin-top: 3px; }
+
+.jar-badge {
+  font-size: 8.5px;
+  padding: 1px 5px 1.5px;
+  border-radius: 2px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  flex-shrink: 0;
+}
+
+.jar-badge-url      { background: #091C2A; color: #5899BE; }
+.jar-badge-email    { background: #091E12; color: #5BAA6A; }
+.jar-badge-phone    { background: #180E2A; color: #8B70C8; }
+.jar-badge-code     { background: #1E1208; color: var(--j-amber); }
+.jar-badge-json     { background: #1C1800; color: #C8A830; }
+.jar-badge-text     { background: var(--j-glass); color: var(--j-muted); }
+.jar-badge-image    { background: #1C0A16; color: #C060A0; }
+.jar-badge-richtext { background: #0C1622; color: #5878C8; }
+
+.jar-clip-time {
+  font-size: 9.5px;
+  color: var(--j-dim);
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  flex-shrink: 0;
+}
+
+.jar-clip-source {
+  font-size: 9.5px;
+  color: var(--j-dim);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100px;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
+.jar-pin {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--j-border);
+  padding: 2px 2px;
+  flex-shrink: 0;
+  transition: color 0.15s;
+  line-height: 1;
+}
+
+.jar-pin:hover, .jar-pin.pinned { color: var(--j-gold); }
+
+/* ── Snippet Add ── */
+.jar-snippet-btn-wrap {
+  padding: 6px 10px;
+  border-top: 1px solid var(--j-border);
+  background: var(--j-glass);
+  flex-shrink: 0;
+}
+
+.jar-snippet-add {
+  width: 100%;
+  padding: 5px;
+  font-size: 9.5px;
+  color: var(--j-amber);
+  background: none;
+  border: 1px dashed var(--j-border);
+  border-radius: 2px;
+  cursor: pointer;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-weight: 600;
+  transition: all 0.15s;
+}
+
+.jar-snippet-add:hover { border-color: var(--j-amber); color: var(--j-gold); }
+
+/* ── Snippet Editor ── */
+.jar-editor {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--j-border);
+  background: var(--j-glass);
+  flex-shrink: 0;
+}
+
+.jar-editor.hidden { display: none; }
+
+.jar-editor-row { display: flex; gap: 6px; margin-bottom: 6px; }
+
+.jar-input {
+  background: var(--j-raised);
+  border: 1px solid var(--j-border);
+  border-radius: 2px;
+  padding: 5px 8px;
+  color: var(--j-cream);
+  font-size: 11px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.jar-input::placeholder { color: var(--j-dim); }
+.jar-input:focus { border-color: var(--j-amber); }
+.jar-input-shortcut { width: 96px; flex-shrink: 0; }
+.jar-input-expand { flex: 1; min-width: 0; box-sizing: border-box; }
+
+.jar-editor-actions { display: flex; justify-content: flex-end; gap: 6px; }
+
+.jar-btn-cancel {
+  padding: 4px 10px;
+  font-size: 9.5px;
+  color: var(--j-dim);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: color 0.15s;
+}
+
+.jar-btn-cancel:hover { color: var(--j-muted); }
+
+.jar-btn-save {
+  padding: 4px 14px;
+  font-size: 9.5px;
+  color: var(--j-surface);
+  background: var(--j-amber);
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: background 0.15s;
+}
+
+.jar-btn-save:hover { background: var(--j-gold); }
+
+/* ── Status Bar ── */
+.jar-status {
+  padding: 4px 12px;
+  font-size: 9px;
+  color: var(--j-dim);
+  border-top: 1px solid var(--j-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+  background: var(--j-glass);
+  letter-spacing: 0.04em;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
+/* ── Toast ── */
+.jar-toast {
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 5px 14px;
+  border-radius: 2px;
+  font-size: 9px;
+  background: var(--j-amber);
+  color: var(--j-surface);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+  transition: opacity 0.2s;
+  pointer-events: none;
+  z-index: 100;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  white-space: nowrap;
+}
+
+/* ── Help Overlay ── */
+.jar-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  background: var(--j-surface);
+  overflow-y: auto;
+  display: none;
+  flex-direction: column;
+}
+
+.jar-overlay.visible { display: flex; }
+
+.jar-overlay-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--j-border);
+  flex-shrink: 0;
+  background: var(--j-glass);
+}
+
+.jar-overlay-title {
+  font-size: 9.5px;
+  font-weight: 700;
+  color: var(--j-amber);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
+.jar-overlay-close {
+  background: none;
+  border: none;
+  color: var(--j-dim);
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  padding: 0;
+  transition: color 0.15s;
+}
+
+.jar-overlay-close:hover { color: var(--j-cream); }
+
+.jar-overlay-body {
+  padding: 14px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  overflow-y: auto;
+}
+
+.jar-help-section { display: flex; flex-direction: column; gap: 4px; }
+
+.jar-help-heading {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--j-gold);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  margin-bottom: 2px;
+}
+
+.jar-help-item {
+  color: var(--j-muted);
+  line-height: 1.6;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 11px;
 }
