@@ -16,7 +16,7 @@
     "<all_urls>"
   ],
   "background": {
-    "service_worker": "src/background/service-worker.ts",
+    "scripts": ["src/background/service-worker.ts"],
     "type": "module"
   },
   "content_scripts": [
