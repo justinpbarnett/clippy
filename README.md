@@ -1,6 +1,6 @@
 # Clippy
 
-The clipboard manager Chrome deserves. Free, private, keyboard-first.
+The clipboard manager your browser deserves. Free, private, keyboard-first. Works in Chrome and Firefox.
 
 ![Clippy demo](demo.gif)
 
@@ -27,7 +27,7 @@ Clippy has none of them. Everything stays in your browser's local IndexedDB. No 
 
 ## Install
 
-### From source (recommended)
+### From source
 
 **Prerequisites:** Node.js 18+ and npm.
 
@@ -35,15 +35,29 @@ Clippy has none of them. Everything stays in your browser's local IndexedDB. No 
 git clone https://github.com/justinpbarnett/clippy.git
 cd clippy
 npm install
-npm run build
 ```
 
-Then load in Chrome:
+**Chrome / Edge / Brave:**
+
+```bash
+npm run build:chrome
+```
 
 1. Open `chrome://extensions/`
-2. Enable **Developer mode** (toggle in the top right)
-3. Click **Load unpacked**
-4. Select the `dist/` folder inside the cloned repo
+2. Enable **Developer mode** (top right)
+3. Click **Load unpacked**, select the `dist-chrome/` folder
+
+**Firefox (128+):**
+
+```bash
+npm run build:firefox
+```
+
+1. Open `about:debugging#/runtime/this-firefox`
+2. Click **Load Temporary Add-on**
+3. Select any file inside `dist-firefox/` (e.g. `manifest.json`)
+
+For a permanent install, package it as a signed XPI via [about:addons](about:addons) or the [Firefox Add-on Hub](https://addons.mozilla.org/developers/).
 
 Done. Pin Clippy to your toolbar and press **Cmd+Shift+V** (Mac) or **Ctrl+Shift+V** (Windows/Linux) to open it.
 
@@ -52,7 +66,7 @@ Done. Pin Clippy to your toolbar and press **Cmd+Shift+V** (Mac) or **Ctrl+Shift
 Paste this into Claude Code and it will clone, build, and tell you exactly what to click:
 
 ```
-Clone https://github.com/justinpbarnett/clippy, install dependencies, build it, then give me the exact steps to load it as an unpacked Chrome extension. Print the absolute path to the dist/ folder so I can paste it into Chrome.
+Clone https://github.com/justinpbarnett/clippy, install dependencies, build it, then give me the exact steps to load it as an unpacked Chrome extension. Print the absolute path to the dist-chrome/ folder so I can paste it into Chrome.
 ```
 
 ## Keyboard shortcuts
@@ -112,14 +126,26 @@ Popup UI (380x500px)
   writes to clipboard via navigator.clipboard.writeText()
 ```
 
+## Browser differences
+
+| Feature | Chrome / Edge / Brave | Firefox |
+|---|---|---|
+| Side panel | `chrome.sidePanel` | `sidebar_action` (opens via View menu) |
+| Clipboard shortcut | Offscreen document API | Content script relay |
+| Minimum version | Chrome 116+ | Firefox 128+ |
+| Extension ID | Auto-assigned | `clippy@clippy.dev` |
+
+Everything else (history, search, favorites, snippets, keyboard nav) works identically in both browsers.
+
 ## Development
 
 ```bash
-npm run dev        # Vite dev server with HMR
-npm run build      # Production build to dist/
-npm run typecheck   # TypeScript type checking
-npm run test       # Run vitest unit tests
-npm run zip        # Package dist/ for Chrome Web Store
+npm run dev            # Vite dev server with HMR
+npm run build:chrome   # Production build to dist-chrome/
+npm run build:firefox  # Production build to dist-firefox/
+npm run typecheck      # TypeScript type checking
+npm run test           # Run vitest unit tests
+npm run zip            # Package dist-chrome/ for Chrome Web Store
 ```
 
 ## Privacy
