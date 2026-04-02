@@ -1,1 +1,1 @@
-import "/assets/src/background/service-worker-CbPrvmm4.js";
+import "/assets/src/background/service-worker-DUTMFNr7.js";
