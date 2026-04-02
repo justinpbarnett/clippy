@@ -5,11 +5,6 @@ import manifest from './manifest.firefox.json';
 export default defineConfig({
   build: { outDir: 'dist-firefox' },
   plugins: [
-    webExtension({
-      manifest,
-      additionalInputs: {
-        html: ['src/sidepanel/index.html'],
-      },
-    }),
+    webExtension({ manifest }),
   ],
 });
