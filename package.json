@@ -16,7 +16,8 @@
     "zip": "npm run zip:chrome",
     "zip:chrome": "cd dist-chrome && zip -r ../clipjar-chrome.zip .",
     "zip:firefox": "cd dist-firefox && zip -r ../clipjar-firefox.zip .",
-    "screenshots": "node tests/store-screenshots.mjs"
+    "screenshots": "node tests/store-screenshots.mjs",
+    "gen-icons": "node scripts/gen-icons.mjs"
   },
   "dependencies": {
     "fuzzysort": "^3.1.0",
