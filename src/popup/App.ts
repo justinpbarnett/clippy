@@ -87,9 +87,13 @@ export function initApp(root: HTMLElement): void {
     if (store.getState().activeTab !== 'favorites') {
       // Optimistic update: flip the pin flag locally and re-render immediately.
       // No IDB round-trip needed since pin state doesn't affect clip visibility on this tab.
+      const prevClips = allClips;
       allClips = allClips.map((c) => (c.id === id ? { ...c, pinned: !c.pinned } : c));
       applySearch();
-      sendMessage({ type: MessageType.TOGGLE_PIN, payload: { id } });
+      sendMessage({ type: MessageType.TOGGLE_PIN, payload: { id } }).catch(() => {
+        allClips = prevClips;
+        applySearch();
+      });
     } else {
       // On favorites the clip may disappear after unpin, so reload after confirming.
       await sendMessage({ type: MessageType.TOGGLE_PIN, payload: { id } });

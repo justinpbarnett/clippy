@@ -1,45 +1,21 @@
 import { MessageType, type ClipEntry } from '../lib/types';
 import { SNIPPET_BUFFER_SIZE } from '../lib/constants';
+import { buildIndex, matchSnippet, EMPTY_INDEX, type SnippetIndex } from '../lib/snippet-lookup';
 
-let snippets: ClipEntry[] = [];
-let snippetMap = new Map<string, ClipEntry>();
-let maxShortcutLen = 0;
+let snippetIndex: SnippetIndex = EMPTY_INDEX;
 let buffer = '';
 
 async function loadSnippets(): Promise<void> {
   try {
-    snippets = await chrome.runtime.sendMessage({
+    const snippets: ClipEntry[] = await chrome.runtime.sendMessage({
       type: MessageType.GET_SNIPPETS,
       payload: undefined,
     }) || [];
-    rebuildSnippetMap();
+    snippetIndex = buildIndex(snippets);
   } catch (err) {
-    console.warn('[clipjar] failed to load snippets:', err);
-    snippets = [];
-    snippetMap = new Map();
-    maxShortcutLen = 0;
+    console.error('[clipjar] failed to load snippets:', err);
+    snippetIndex = EMPTY_INDEX;
   }
-}
-
-function rebuildSnippetMap(): void {
-  snippetMap = new Map();
-  maxShortcutLen = 0;
-  for (const snippet of snippets) {
-    if (snippet.shortcut) {
-      snippetMap.set(snippet.shortcut, snippet);
-      if (snippet.shortcut.length > maxShortcutLen) maxShortcutLen = snippet.shortcut.length;
-    }
-  }
-}
-
-function findMatchingSnippet(): ClipEntry | undefined {
-  if (snippetMap.size === 0 || buffer.length === 0) return undefined;
-  const tail = buffer.slice(-maxShortcutLen);
-  for (let len = tail.length; len >= 1; len--) {
-    const match = snippetMap.get(tail.slice(-len));
-    if (match) return match;
-  }
-  return undefined;
 }
 
 function replaceInInput(el: HTMLInputElement | HTMLTextAreaElement, shortcut: string, expansion: string): void {
@@ -88,7 +64,7 @@ function handleKeydown(e: KeyboardEvent): void {
     return;
   }
 
-  const match = findMatchingSnippet();
+  const match = matchSnippet(snippetIndex, buffer);
   if (!match || !match.shortcut) return;
 
   const active = document.activeElement;
@@ -109,7 +85,8 @@ const snippetIntervalId = setInterval(loadSnippets, 30_000);
 window.addEventListener('pagehide', () => clearInterval(snippetIntervalId));
 
 // Reload immediately when a new snippet is saved
-chrome.runtime.onMessage.addListener((message) => {
+chrome.runtime.onMessage.addListener((message, sender) => {
+  if (sender.id !== chrome.runtime.id) return false;
   if (message.type === MessageType.SNIPPETS_UPDATED) loadSnippets();
 });
 

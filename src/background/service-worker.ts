@@ -17,6 +17,7 @@ import { detectType } from '../lib/detect-type';
 import { getSettings, updateSettings } from '../lib/settings';
 import { MAX_CONTENT_LENGTH } from '../lib/constants';
 import { MessageType, type ClipEntry, type ClipCapturedPayload, type GetClipsPayload, type SaveSnippetPayload, type UserSettings } from '../lib/types';
+import { buildClipboardMessage } from '../lib/clipboard-message';
 
 async function computeHash(content: string): Promise<string> {
   const encoder = new TextEncoder();
@@ -98,7 +99,11 @@ async function handleSaveSnippet(payload: SaveSnippetPayload): Promise<ClipEntry
   return clip;
 }
 
-chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (sender.id !== chrome.runtime.id) {
+    sendResponse({ error: 'Unauthorized sender' });
+    return false;
+  }
   const { type, payload } = message;
 
   const handle = async () => {
@@ -195,12 +200,9 @@ async function captureAndWrite(
   content: string,
   sourceUrl: string,
   sourceTitle: string,
-  messageType: MessageType,
+  messageType: MessageType.WRITE_CLIPBOARD | MessageType.WRITE_CLIPBOARD_IMAGE,
 ): Promise<void> {
-  const msg = messageType === MessageType.WRITE_CLIPBOARD_IMAGE
-    ? { type: messageType, payload: { url: content } }
-    : { type: messageType, payload: { text: content } };
-  await dispatchClipboardWrite(tab, msg);
+  await dispatchClipboardWrite(tab, buildClipboardMessage(messageType, content));
   await handleClipCaptured({ content, sourceUrl, sourceTitle });
 }
 

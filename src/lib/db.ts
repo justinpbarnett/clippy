@@ -1,4 +1,4 @@
-import { openDB, type IDBPDatabase, type IDBPCursorWithValue } from 'idb';
+import { openDB, type IDBPDatabase, type DBSchema } from 'idb';
 import { DB_NAME, DB_VERSION, CLIPS_STORE } from './constants';
 import type { ClipEntry } from './types';
 
@@ -7,11 +7,33 @@ type StoredClipEntry = Omit<ClipEntry, 'pinned' | 'isSnippet'> & {
   isSnippet: 0 | 1;
 };
 
-let dbPromise: Promise<IDBPDatabase> | null = null;
+interface ClipjarDB extends DBSchema {
+  clips: {
+    key: string;
+    value: StoredClipEntry;
+    indexes: {
+      'by-timestamp': number;
+      'by-type': string;
+      'by-pinned': 0 | 1;
+      'by-snippet': 0 | 1;
+      'by-hash': string;
+      'by-shortcut': string;
+    };
+  };
+}
 
-function getDb(): Promise<IDBPDatabase> {
+// Minimal structural type for a cursor that yields StoredClipEntry rows.
+// Used instead of the full IDBPCursorWithValue generic to avoid multi-any.
+interface StoreCursor {
+  readonly value: StoredClipEntry;
+  continue(): Promise<StoreCursor | null>;
+}
+
+let dbPromise: Promise<IDBPDatabase<ClipjarDB>> | null = null;
+
+function getDb(): Promise<IDBPDatabase<ClipjarDB>> {
   if (!dbPromise) {
-    dbPromise = openDB(DB_NAME, DB_VERSION, {
+    dbPromise = openDB<ClipjarDB>(DB_NAME, DB_VERSION, {
       upgrade(db) {
         if (!db.objectStoreNames.contains(CLIPS_STORE)) {
           const store = db.createObjectStore(CLIPS_STORE, { keyPath: 'id' });
@@ -36,13 +58,18 @@ function denormalizeClip(stored: StoredClipEntry): ClipEntry {
   return { ...stored, pinned: stored.pinned === 1, isSnippet: stored.isSnippet === 1 };
 }
 
-async function getStoredClip(id: string): Promise<StoredClipEntry | undefined> {
+async function getStoredClip(id: string): Promise<{ db: IDBPDatabase<ClipjarDB>; clip: StoredClipEntry } | undefined> {
   const db = await getDb();
-  return db.get(CLIPS_STORE, id) as Promise<StoredClipEntry | undefined>;
+  const clip = await db.get(CLIPS_STORE, id);
+  return clip ? { db, clip } : undefined;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-async function paginateCursor(cursor: IDBPCursorWithValue<any, any, any, any, any> | null, limit: number, offset: number): Promise<ClipEntry[]> {
+function onDbLookupError(err: unknown): undefined {
+  console.warn('[clipjar] db lookup failed:', err);
+  return undefined;
+}
+
+async function paginateCursor(cursor: StoreCursor | null, limit: number, offset: number): Promise<ClipEntry[]> {
   let cur = cursor;
   const results: ClipEntry[] = [];
   let skipped = 0;
@@ -53,7 +80,7 @@ async function paginateCursor(cursor: IDBPCursorWithValue<any, any, any, any, an
       cur = await cur.continue();
       continue;
     }
-    results.push(denormalizeClip(cur.value as StoredClipEntry));
+    results.push(denormalizeClip(cur.value));
     if (results.length >= limit) break;
     cur = await cur.continue();
   }
@@ -69,15 +96,14 @@ export async function addClip(clip: ClipEntry): Promise<void> {
 export async function getClipByHash(hash: string): Promise<ClipEntry | undefined> {
   const db = await getDb();
   const stored = await db.getFromIndex(CLIPS_STORE, 'by-hash', hash);
-  return stored ? denormalizeClip(stored as StoredClipEntry) : undefined;
+  return stored ? denormalizeClip(stored) : undefined;
 }
 
 export async function updateTimestamp(id: string, timestamp: number): Promise<void> {
-  const clip = await getStoredClip(id);
-  if (clip) {
-    const db = await getDb();
-    clip.timestamp = timestamp;
-    await db.put(CLIPS_STORE, clip);
+  const result = await getStoredClip(id);
+  if (result) {
+    result.clip.timestamp = timestamp;
+    await result.db.put(CLIPS_STORE, result.clip);
   }
 }
 
@@ -86,7 +112,7 @@ export async function getRecentClips(limit: number, offset = 0): Promise<ClipEnt
   const tx = db.transaction(CLIPS_STORE, 'readonly');
   const index = tx.store.index('by-timestamp');
   const cursor = await index.openCursor(null, 'prev');
-  return paginateCursor(cursor, limit, offset);
+  return paginateCursor(cursor as StoreCursor | null, limit, offset);
 }
 
 export async function getPinnedClips(limit: number, offset = 0): Promise<ClipEntry[]> {
@@ -94,7 +120,7 @@ export async function getPinnedClips(limit: number, offset = 0): Promise<ClipEnt
   const tx = db.transaction(CLIPS_STORE, 'readonly');
   const index = tx.store.index('by-pinned');
   const cursor = await index.openCursor(IDBKeyRange.only(1), 'prev');
-  return paginateCursor(cursor, limit, offset);
+  return paginateCursor(cursor as StoreCursor | null, limit, offset);
 }
 
 export async function getSnippets(): Promise<ClipEntry[]> {
@@ -102,15 +128,14 @@ export async function getSnippets(): Promise<ClipEntry[]> {
   const tx = db.transaction(CLIPS_STORE, 'readonly');
   const index = tx.store.index('by-snippet');
   const cursor = await index.openCursor(IDBKeyRange.only(1));
-  return paginateCursor(cursor, Infinity, 0);
+  return paginateCursor(cursor as StoreCursor | null, Infinity, 0);
 }
 
 export async function togglePin(id: string): Promise<boolean> {
-  const stored = await getStoredClip(id);
-  if (!stored) return false;
-  const db = await getDb();
-  const newPinned = stored.pinned === 0;
-  await db.put(CLIPS_STORE, { ...stored, pinned: newPinned ? 1 : 0 } as StoredClipEntry);
+  const result = await getStoredClip(id);
+  if (!result) return false;
+  const newPinned = result.clip.pinned === 0;
+  await result.db.put(CLIPS_STORE, { ...result.clip, pinned: newPinned ? 1 : 0 });
   return newPinned;
 }
 
@@ -120,12 +145,11 @@ export async function deleteClip(id: string): Promise<void> {
 }
 
 export async function updateClip(id: string, content: string): Promise<void> {
-  const clip = await getStoredClip(id);
-  if (clip) {
-    const db = await getDb();
-    clip.content = content;
-    clip.charCount = content.length;
-    await db.put(CLIPS_STORE, clip);
+  const result = await getStoredClip(id);
+  if (result) {
+    result.clip.content = content;
+    result.clip.charCount = content.length;
+    await result.db.put(CLIPS_STORE, result.clip);
   }
 }
 
@@ -144,7 +168,7 @@ export async function pruneOldClips(maxHistory: number): Promise<void> {
   const deletable: string[] = [];
 
   while (cursor) {
-    const clip = cursor.value as StoredClipEntry;
+    const clip = cursor.value;
     if (!clip.pinned && !clip.isSnippet) {
       deletable.push(clip.id);
     }
@@ -164,7 +188,7 @@ export async function pruneOldClips(maxHistory: number): Promise<void> {
 
 export async function getAllClips(): Promise<ClipEntry[]> {
   const db = await getDb();
-  const stored = await db.getAll(CLIPS_STORE) as StoredClipEntry[];
+  const stored = await db.getAll(CLIPS_STORE);
   return stored.map(denormalizeClip);
 }
 
@@ -172,7 +196,7 @@ export async function importClips(clips: ClipEntry[]): Promise<number> {
   const db = await getDb();
   let imported = 0;
   for (const clip of clips) {
-    const existing = await db.getFromIndex(CLIPS_STORE, 'by-hash', clip.hash).catch((err) => { console.warn('[clipjar] db lookup failed:', err); return undefined; });
+    const existing = await db.getFromIndex(CLIPS_STORE, 'by-hash', clip.hash).catch(onDbLookupError);
     if (!existing) {
       await db.put(CLIPS_STORE, normalizeClip(clip));
       imported++;
@@ -183,6 +207,6 @@ export async function importClips(clips: ClipEntry[]): Promise<number> {
 
 export async function getSnippetByShortcut(shortcut: string): Promise<ClipEntry | undefined> {
   const db = await getDb();
-  const stored = await db.getFromIndex(CLIPS_STORE, 'by-shortcut', shortcut).catch((err) => { console.warn('[clipjar] db lookup failed:', err); return undefined; });
-  return stored ? denormalizeClip(stored as StoredClipEntry) : undefined;
+  const stored = await db.getFromIndex(CLIPS_STORE, 'by-shortcut', shortcut).catch(onDbLookupError);
+  return stored ? denormalizeClip(stored) : undefined;
 }
