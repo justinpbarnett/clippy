@@ -31,24 +31,25 @@ Clipjar has none of them. Everything stays in your browser's local IndexedDB. No
 - Arrow keys, Enter, Tab, Escape, no mouse required
 - Follows your system dark/light preference
 - Full JSON export and import
+- Adjustable text size, with a larger popup when you need it
 - Side panel for a persistent view while you browse
-- No `clipboardRead` permission at install; captured via the native copy event
+- No `clipboardRead` permission needed; clips are captured via the native copy event
 
 ## Install
 
 Download the latest zip from the [releases page](https://github.com/justinpbarnett/clipjar/releases/latest).
 
-**Chrome / Edge / Brave:** download `clipjar-chrome-1.0.0.zip`, unzip it, then:
+**Chrome / Edge / Brave:** download `clipjar-chrome-1.1.0.zip`, unzip it, then:
 
 1. Open `chrome://extensions/`
 2. Enable **Developer mode** (top right)
 3. Click **Load unpacked**, select the unzipped folder
 
-**Firefox (128+):** download `clipjar-firefox-1.0.0.zip`, then:
+**Firefox (128+):** download `clipjar-firefox-1.1.0.zip`, unzip it, then:
 
 1. Open `about:debugging#/runtime/this-firefox`
 2. Click **Load Temporary Add-on**
-3. Select the zip file directly
+3. Select `manifest.json` inside the unzipped folder
 
 Pin Clipjar to your toolbar and press **Cmd+Shift+V** (Mac) or **Ctrl+Shift+V** (Windows/Linux) to open it.
 
@@ -97,6 +98,7 @@ Open the options page from `chrome://extensions/` or right-click the Clipjar ico
 
 - Max clipboard history (default 1000)
 - Theme (system, light, dark)
+- Text size (default, large, extra large)
 - Skip password fields (on by default)
 - Enable snippet expansion
 - Track source URLs
@@ -117,7 +119,7 @@ Service Worker
   stores to IndexedDB
   prunes history to configured max
        |
-Popup UI (380x500px)
+Popup UI (~380x500 at default text size; scales up for accessibility)
   fuzzy search via fuzzysort
   virtual-scrolled clip list
   full keyboard navigation
@@ -128,7 +130,7 @@ Popup UI (380x500px)
 
 | Feature | Chrome / Edge / Brave | Firefox |
 |---|---|---|
-| Side panel | `chrome.sidePanel` | `sidebar_action` (opens via View menu) |
+| Side panel | `chrome.sidePanel` | Not supported |
 | Clipboard shortcut | Offscreen document API | Content script relay |
 | Minimum version | Chrome 116+ | Firefox 128+ |
 | Extension ID | Auto-assigned | `clipjar@clipjar.dev` |
@@ -150,7 +152,7 @@ npm run zip            # Package dist-chrome/ for Chrome Web Store
 
 All data is stored in IndexedDB locally. Nothing leaves your browser: no network requests, no analytics, no telemetry.
 
-Text is captured via `window.getSelection()` inside the native copy event, so `clipboardRead` isn't needed at install. It's listed as an optional permission but nothing currently requests it.
+Text is captured via `window.getSelection()` inside the native copy event, so `clipboardRead` isn't needed.
 
 Open source. Read every line.
 

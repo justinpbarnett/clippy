@@ -27,6 +27,7 @@ export interface ClipEntry {
 export interface UserSettings {
   maxHistory: number;
   theme: 'system' | 'light' | 'dark';
+  textSize: 'normal' | 'large' | 'x-large';
   enableSnippetExpansion: boolean;
   enableSourceTracking: boolean;
   skipPasswordFields: boolean;

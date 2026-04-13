@@ -3,6 +3,7 @@ import type { UserSettings } from './types';
 export const DEFAULT_SETTINGS: UserSettings = {
   maxHistory: 1000,
   theme: 'system',
+  textSize: 'normal',
   enableSnippetExpansion: true,
   enableSourceTracking: true,
   skipPasswordFields: true,

@@ -1,6 +1,7 @@
 import { MessageType, type UserSettings, type ClipEntry } from '../lib/types';
 import { DEFAULT_SETTINGS, MAX_CONTENT_LENGTH } from '../lib/constants';
 import { sendMessage } from '../lib/messages';
+import { applyTextSize } from '../lib/text-size';
 
 const root = document.getElementById('app')!;
 
@@ -10,70 +11,75 @@ const STYLE = `
     --j-surface:#0D0A06;--j-glass:#141009;--j-raised:#1C1509;
     --j-border:#2C1D0A;--j-amber:#C87A38;--j-gold:#E8A848;
     --j-cream:#EED9B5;--j-muted:#9A7A52;--j-dim:#5A4030;
+    --j-text-scale:1;
   }
+  :root[data-clipjar-text-size='large']{--j-text-scale:1.2}
+  :root[data-clipjar-text-size='x-large']{--j-text-scale:1.35}
   body{
     background:var(--j-surface);color:var(--j-cream);margin:0;
     font-family:ui-sans-serif,system-ui,sans-serif;
-    font-size:14px;-webkit-font-smoothing:antialiased;
+    font-size:calc(14px * var(--j-text-scale));-webkit-font-smoothing:antialiased;
     min-height:100vh;
   }
   .opts-wrap{max-width:480px;margin:0 auto;padding:40px 24px 60px}
   .opts-header{display:flex;align-items:center;gap:10px;margin-bottom:40px;padding-bottom:20px;border-bottom:1px solid var(--j-border)}
   .opts-logo{display:flex;align-items:center;gap:8px}
   .opts-jar{color:var(--j-amber)}
-  .opts-wordmark{font-size:15px;font-weight:700;color:var(--j-amber);letter-spacing:0.14em;text-transform:uppercase}
-  .opts-title{font-size:11px;color:var(--j-dim);letter-spacing:0.12em;text-transform:uppercase;margin-left:auto}
+  .opts-wordmark{font-size:calc(15px * var(--j-text-scale));font-weight:700;color:var(--j-amber);letter-spacing:0.14em;text-transform:uppercase}
+  .opts-title{font-size:calc(11px * var(--j-text-scale));color:var(--j-dim);letter-spacing:0.12em;text-transform:uppercase;margin-left:auto}
   .opts-section{margin-bottom:32px}
-  .opts-section-label{font-size:9.5px;font-weight:700;color:var(--j-gold);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:14px}
+  .opts-section-label{font-size:calc(9.5px * var(--j-text-scale));font-weight:700;color:var(--j-gold);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:14px}
   .opts-row{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--j-border)}
   .opts-row:last-child{border-bottom:none}
-  .opts-row-label{font-size:13px;color:var(--j-cream)}
+  .opts-row-label{font-size:calc(13px * var(--j-text-scale));color:var(--j-cream)}
   .opts-input{
     background:var(--j-raised);border:1px solid var(--j-border);border-radius:3px;
-    padding:5px 10px;color:var(--j-cream);font-size:12px;font-family:ui-monospace,monospace;
+    padding:5px 10px;color:var(--j-cream);font-size:calc(12px * var(--j-text-scale));font-family:ui-monospace,monospace;
     outline:none;transition:border-color 0.15s;
   }
   .opts-input:focus{border-color:var(--j-amber)}
   .opts-input-num{width:80px;text-align:center}
   .opts-select{
     background:var(--j-raised);border:1px solid var(--j-border);border-radius:3px;
-    padding:5px 10px;color:var(--j-cream);font-size:12px;font-family:inherit;
+    padding:5px 10px;color:var(--j-cream);font-size:calc(12px * var(--j-text-scale));font-family:inherit;
     outline:none;cursor:pointer;transition:border-color 0.15s;
   }
   .opts-select:focus{border-color:var(--j-amber)}
-  .opts-toggle{position:relative;width:36px;height:20px;cursor:pointer}
+  .opts-toggle{position:relative;width:calc(36px * var(--j-text-scale));height:calc(20px * var(--j-text-scale));cursor:pointer}
   .opts-toggle input{opacity:0;width:0;height:0;position:absolute}
   .opts-toggle-track{
-    position:absolute;inset:0;border-radius:10px;background:var(--j-border);
+    position:absolute;inset:0;border-radius:calc(10px * var(--j-text-scale));background:var(--j-border);
     transition:background 0.2s;
   }
   .opts-toggle input:checked ~ .opts-toggle-track{background:var(--j-amber)}
   .opts-toggle-thumb{
-    position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;
+    position:absolute;top:calc(3px * var(--j-text-scale));left:calc(3px * var(--j-text-scale));width:calc(14px * var(--j-text-scale));height:calc(14px * var(--j-text-scale));border-radius:50%;
     background:var(--j-dim);transition:transform 0.2s,background 0.2s;
   }
-  .opts-toggle input:checked ~ .opts-toggle-thumb{transform:translateX(16px);background:var(--j-surface)}
+  .opts-toggle input:checked ~ .opts-toggle-thumb{transform:translateX(calc(16px * var(--j-text-scale)));background:var(--j-surface)}
   .opts-btn{
-    padding:8px 18px;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+    padding:8px 18px;font-size:calc(11px * var(--j-text-scale));font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
     border-radius:2px;border:none;cursor:pointer;transition:background 0.15s;font-family:inherit;
   }
   .opts-btn-primary{background:var(--j-amber);color:var(--j-surface)}
   .opts-btn-primary:hover{background:var(--j-gold)}
   .opts-btn-ghost{background:var(--j-glass);color:var(--j-muted);border:1px solid var(--j-border)}
   .opts-btn-ghost:hover{border-color:var(--j-amber);color:var(--j-cream)}
-  .opts-status{margin-top:10px;font-size:11px;color:var(--j-muted);font-family:ui-monospace,monospace;min-height:18px}
+  .opts-status{margin-top:10px;font-size:calc(11px * var(--j-text-scale));color:var(--j-muted);font-family:ui-monospace,monospace;min-height:18px}
 `;
 
 async function init() {
-  const settings = await sendMessage<UserSettings>({
+  const savedSettings = await sendMessage<Partial<UserSettings> | null>({
     type: MessageType.GET_SETTINGS,
     payload: undefined,
   });
+  const settings = { ...DEFAULT_SETTINGS, ...(savedSettings ?? {}) };
 
   // Inject styles
   const style = document.createElement('style');
   style.textContent = STYLE;
   document.head.appendChild(style);
+  applyTextSize(settings.textSize);
 
   root.innerHTML = '';
 
@@ -110,6 +116,11 @@ async function init() {
     { value: 'system', label: 'System' },
     { value: 'light', label: 'Light' },
     { value: 'dark', label: 'Dark' },
+  ]);
+  addSelectSetting(prefsSection, 'Text size', 'textSize', settings.textSize, [
+    { value: 'normal', label: 'Default' },
+    { value: 'large', label: 'Large' },
+    { value: 'x-large', label: 'Extra large' },
   ]);
   addSelectSetting(prefsSection, 'Default tab', 'defaultTab', settings.defaultTab, [
     { value: 'all', label: 'All' },
@@ -227,6 +238,7 @@ function createRow(label: string): HTMLElement {
 }
 
 async function saveSetting(key: string, value: unknown) {
+  if (key === 'textSize') applyTextSize(value);
   await sendMessage({ type: MessageType.UPDATE_SETTINGS, payload: { [key]: value } as Partial<UserSettings> });
 }
 
@@ -266,6 +278,9 @@ function handleImport(statusEl: HTMLElement) {
         type: MessageType.IMPORT_DATA,
         payload: { clips: data.clips, settings: data.settings },
       });
+      if (data.settings && typeof data.settings === 'object' && 'textSize' in data.settings) {
+        applyTextSize((data.settings as Partial<UserSettings>).textSize);
+      }
       statusEl.textContent = `Imported ${result.imported} new clips`;
     } catch (err) {
       statusEl.textContent = `Import failed: ${err instanceof Error ? err.message : 'unknown error'}`;

@@ -24,10 +24,10 @@ npm run build:firefox
 
 # Package it
 npm run zip:firefox
-# Output: clipjar-firefox.zip
+# Output: clipjar-firefox-1.1.0.zip
 ```
 
-The resulting `clipjar-firefox.zip` contains the same files as the submitted package.
+The resulting `clipjar-firefox-1.1.0.zip` contains the same files as the submitted package.
 
 ## Build output
 
@@ -41,7 +41,7 @@ The resulting `clipjar-firefox.zip` contains the same files as the submitted pac
 ```bash
 npm run build:chrome
 npm run zip:chrome
-# Output: clipjar-chrome.zip
+# Output: clipjar-chrome-1.1.0.zip
 ```
 
 ## Verify
@@ -51,4 +51,4 @@ After building, load the extension temporarily in Firefox:
 2. Click "Load Temporary Add-on"
 3. Select any file inside `dist-firefox/`
 
-The extension should appear in the toolbar and open a 380x500 popup when clicked.
+The extension should appear in the toolbar and open its popup when clicked.

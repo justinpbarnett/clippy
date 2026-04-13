@@ -2,8 +2,9 @@ import { createStore, type Store } from '../lib/store';
 import { sendMessage } from '../lib/messages';
 import { writeToClipboard } from '../lib/clipboard-write';
 import { searchClips, invalidateIndex } from '../lib/search';
-import { MessageType, type ClipEntry } from '../lib/types';
-import { PAGE_SIZE } from '../lib/constants';
+import { MessageType, type ClipEntry, type UserSettings } from '../lib/types';
+import { DEFAULT_SETTINGS, PAGE_SIZE, SETTINGS_SYNC_KEY } from '../lib/constants';
+import { applyTextSize } from '../lib/text-size';
 import { initialState, type PopupState } from './state';
 import { renderTabBar } from './components/TabBar';
 import { renderSearchBar } from './components/SearchBar';
@@ -17,7 +18,7 @@ export function initApp(root: HTMLElement): void {
   let allClips: ClipEntry[] = [];
 
   root.className = 'relative flex flex-col';
-  root.style.cssText = 'width:380px;max-height:500px;overflow:hidden;background:var(--j-surface)';
+  root.style.cssText = 'width:var(--j-popup-width);max-height:var(--j-popup-height);overflow:hidden;background:var(--j-surface)';
 
   const showHelp = renderHelpOverlay(root);
   renderTabBar(root, store, showHelp);
@@ -44,10 +45,39 @@ export function initApp(root: HTMLElement): void {
     }
   });
 
+  applyTextSize(DEFAULT_SETTINGS.textSize);
+  void loadPreferences();
+  subscribeToSettingChanges();
   fetchClips();
   loadCount();
 
   document.addEventListener('keydown', (e) => handleKeydown(e, store));
+
+  async function loadPreferences(): Promise<void> {
+    try {
+      const savedSettings = await sendMessage<Partial<UserSettings> | null>({
+        type: MessageType.GET_SETTINGS,
+        payload: undefined,
+      });
+      const settings = { ...DEFAULT_SETTINGS, ...(savedSettings ?? {}) };
+      applyTextSize(settings.textSize);
+    } catch {
+      applyTextSize(DEFAULT_SETTINGS.textSize);
+    }
+  }
+
+  function subscribeToSettingChanges(): void {
+    chrome.storage.onChanged?.addListener((changes, areaName) => {
+      if (areaName !== 'sync') return;
+      const settingsChange = changes[SETTINGS_SYNC_KEY];
+      if (!settingsChange) return;
+      const settings = {
+        ...DEFAULT_SETTINGS,
+        ...((settingsChange.newValue as Partial<UserSettings> | undefined) ?? {}),
+      };
+      applyTextSize(settings.textSize);
+    });
+  }
 
   async function fetchClips(): Promise<void> {
     store.setState({ loading: true });

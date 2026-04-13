@@ -1,7 +1,8 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { initApp } from '../src/popup/App';
-import { MessageType, ClipType, type ClipEntry } from '../src/lib/types';
+import { MessageType, ClipType, type ClipEntry, type UserSettings } from '../src/lib/types';
+import { DEFAULT_SETTINGS } from '../src/lib/constants';
 
 function makeClip(id: string, pinned = false): ClipEntry {
   return {
@@ -20,13 +21,16 @@ function makeClip(id: string, pinned = false): ClipEntry {
 
 const testClips = [makeClip('c1', false), makeClip('c2', true)];
 
-function setupChrome(opts: { togglePinRejects?: boolean } = {}) {
+function setupChrome(opts: { togglePinRejects?: boolean; settings?: Partial<UserSettings> } = {}) {
   (globalThis as unknown as { chrome: unknown }).chrome = {
     runtime: {
       id: 'test-clipjar-id',
       sendMessage: vi.fn((msg: { type: MessageType }) => {
         if (msg.type === MessageType.GET_CLIPS) return Promise.resolve([...testClips]);
         if (msg.type === MessageType.CLIP_COUNT) return Promise.resolve({ count: 2 });
+        if (msg.type === MessageType.GET_SETTINGS) {
+          return Promise.resolve({ ...DEFAULT_SETTINGS, ...(opts.settings ?? {}) });
+        }
         if (msg.type === MessageType.TOGGLE_PIN) {
           return opts.togglePinRejects
             ? Promise.reject(new Error('server error'))
@@ -37,6 +41,7 @@ function setupChrome(opts: { togglePinRejects?: boolean } = {}) {
       onMessage: { addListener: vi.fn() },
     },
     storage: {
+      onChanged: { addListener: vi.fn() },
       sync: {
         get: vi.fn().mockResolvedValue({}),
         set: vi.fn().mockResolvedValue(undefined),
@@ -56,6 +61,7 @@ describe('initApp — pin behavior', () => {
   });
 
   afterEach(() => {
+    document.documentElement.removeAttribute('data-clipjar-text-size');
     document.body.removeChild(root);
   });
 
@@ -63,6 +69,18 @@ describe('initApp — pin behavior', () => {
     initApp(root);
     await vi.waitFor(() => root.querySelectorAll('[data-id]').length === 2);
     expect(root.querySelectorAll('[data-id]')).toHaveLength(2);
+    expect(root.style.width).toBe('var(--j-popup-width)');
+    expect(root.style.maxHeight).toBe('var(--j-popup-height)');
+  });
+
+  it('applies the saved text size setting', async () => {
+    setupChrome({ settings: { textSize: 'x-large' } });
+
+    initApp(root);
+
+    await vi.waitFor(() =>
+      document.documentElement.getAttribute('data-clipjar-text-size') === 'x-large',
+    );
   });
 
   it('c1 starts unpinned, c2 starts pinned', async () => {

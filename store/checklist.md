@@ -19,7 +19,7 @@
 - [ ] Verify developer account
 
 ### Per-submission
-- [ ] Upload `clipjar-chrome.zip`
+- [ ] Upload `clipjar-chrome-1.1.0.zip`
 - [ ] Fill in store listing (see store/listing.md for copy)
 - [ ] Upload screenshots (store/screenshots/chrome-*.png, at least 2)
 - [ ] Upload promo tile: store/screenshots/promo-tile-440x280.png
@@ -43,10 +43,15 @@ First submission with <all_urls> host permission triggers enhanced review. Budge
 - [ ] Create developer account at addons.mozilla.org
 
 ### Per-submission
-- [ ] Upload `clipjar-firefox.zip` as the extension package
+- [ ] Upload `clipjar-firefox-1.1.0.zip` as the extension package
 - [ ] Upload source code: create a zip of the project root (excluding node_modules, dist-*, .git)
   ```bash
-  zip -r clipjar-source.zip . --exclude "node_modules/*" --exclude "dist-*" --exclude ".git/*"
+  zip -r clipjar-source-1.1.0.zip . \
+    --exclude "node_modules/*" \
+    --exclude "*/node_modules/*" \
+    --exclude "dist-*" \
+    --exclude "*.zip" \
+    --exclude ".git/*"
   ```
 - [ ] In the source code submission form, paste the build instructions from BUILDING.md
 - [ ] Fill in listing copy (see store/listing.md)
@@ -80,6 +85,6 @@ Firefox AMO: use screenshots 01-05.
 
 ## After publishing
 
-- [ ] Tag the release in git: `git tag v1.0.0 && git push --tags`
+- [ ] Tag the release in git: `git tag v1.1.0 && git push --tags`
 - [ ] Update README.md with Chrome Web Store and AMO install links
 - [ ] Share the release

@@ -39,12 +39,15 @@ Clips get tagged as URL, email, code, JSON, or plain text so you can scan the li
 Keyboard first
 Navigate everything with the keyboard. Open, search, select, copy, delete, switch tabs. Mouse optional.
 
-Sidebar panel
-Pin Clipjar as a sidebar next to whatever page you're on.
+Accessibility
+Increase text size in settings. The popup grows with it, making clips easier to read.
+
+Side panel
+Open Clipjar in a persistent side panel while you browse.
 
 PRIVACY
 
-No accounts. No servers. No analytics. Your clipboard data stays on your machine. The clipboardRead permission is optional; Clipjar only asks for it if you turn it on in settings.
+No accounts. No servers. No analytics. Your clipboard data stays on your machine. Clipjar captures copies via the native copy event, so it does not need the clipboardRead permission.
 
 OPEN SOURCE
 
@@ -92,12 +95,12 @@ Clips get tagged as URL, email, code, JSON, or plain text.
 Keyboard first
 Navigate everything with the keyboard. Open, search, select, copy, delete, switch tabs. Mouse optional.
 
-Sidebar panel
-Pin Clipjar as a sidebar next to whatever page you're on.
+Accessibility
+Increase text size in settings. The popup grows with it, making clips easier to read.
 
 PRIVACY
 
-No accounts. No servers. No analytics. Your clipboard data stays on your machine. The clipboardRead permission is optional; Clipjar only asks for it if you turn it on in settings. Full privacy policy at the link below.
+No accounts. No servers. No analytics. Your clipboard data stays on your machine. Clipjar captures copies via the native copy event, so it does not need the clipboardRead permission. Full privacy policy at the link below.
 
 OPEN SOURCE
 
